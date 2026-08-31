@@ -28,3 +28,20 @@ pnpm-debug.log*
 
 # NOTE: docs/ and context/ are intentionally NOT ignored — tracked in git
 # (course material + PRD/tech-stack/roadmap/test-plan foundation docs)
+
+# --- SvelteKit scaffold additions (sv create) ---
+.output/
+.vercel/
+.netlify/
+.wrangler/
+/.svelte-kit/
+/build/
+.DS_Store
+Thumbs.db
+!.env.test
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+test-results/
+playwright-report/
+blob-report/
+.pnpm-store/
