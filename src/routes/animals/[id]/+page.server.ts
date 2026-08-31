@@ -4,6 +4,7 @@ import { db } from '$lib/server/db';
 import { animals, healthEvents, weightLogs } from '$lib/server/db/schema';
 import { getOwnedAnimal } from '$lib/server/data-access/getOwnedAnimal';
 import { computeWeightTrend } from '$lib/server/domain/weightTrend';
+import { isValidWeightKg } from '$lib/server/domain/weightInput';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -40,8 +41,10 @@ export const actions: Actions = {
 		const measuredAt = String(formData.get('measuredAt') ?? '').trim();
 		const note = String(formData.get('note') ?? '').trim();
 
-		if (!measuredAt || !Number.isFinite(weightKg) || weightKg <= 0) {
-			return fail(400, { error: 'Podaj poprawną wagę i datę pomiaru.' });
+		if (!measuredAt || !isValidWeightKg(weightKg)) {
+			return fail(400, {
+				error: 'Podaj poprawną wagę (większą od 0, maks. 150 kg) i datę pomiaru.'
+			});
 		}
 
 		await db.insert(weightLogs).values({
