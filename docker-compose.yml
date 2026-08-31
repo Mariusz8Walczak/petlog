@@ -12,6 +12,16 @@ services:
       # mount below, so this must stay a relative "file:./data/..." path
       # regardless of what DATABASE_URL is set to for local (non-Docker) dev.
       DATABASE_URL: file:./data/petlog.db
+      # @sveltejs/adapter-node needs this to know its own public origin for
+      # CSRF checks on POST form actions. Without it, adapter-node's default
+      # origin guess doesn't line up with a non-default HOST_PORT (e.g.
+      # `HOST_PORT=3050`), and every login/form POST is rejected with
+      # "Cross-site POST form submissions are forbidden" — found by manually
+      # clicking through the app, not by the test suite (Playwright always
+      # runs against the default port, so it never exercised this path).
+      # If you put this behind a reverse proxy with a different public
+      # hostname, override ORIGIN to match that public URL instead.
+      ORIGIN: http://localhost:${HOST_PORT:-3000}
     volumes:
       - ./data:/app/data
     restart: unless-stopped
