@@ -1,10 +1,26 @@
 # Code Review Criteria — PetLog
 
 Pięć kryteriów akceptacji PR-a, ustalonych świadomie przed podłączeniem agenta do
-CI/CD (10xChampion: agent w pipeline musi mieć konkretny, wymuszony kontrakt oceny,
-nie rozmyty prompt "sprawdź czy kod jest dobry"). Ten plik jest źródłem prawdy — AI
-reviewer w `.github/workflows/ai-review.yml` dostaje te same kryteria wprost w
-system prompcie (`.github/prompts/review-system-prompt.md`).
+CI/CD (10xChampion: agent w pipeline musi mieć konkretny kontrakt oceny, nie
+rozmyty prompt "sprawdź czy kod jest dobry"). Człowiek (i reviewer, ludzki albo AI)
+oceniają PR-a względem tej listy — to jest źródło prawdy dla obu.
+
+## Jak to jest wpięte w pipeline (i dlaczego zmieniło się w trakcie budowy)
+
+Pierwsza wersja tego pipeline'u wołała `actions/ai-inference` przez **GitHub
+Models** (darmowe, bez klucza API) z tymi kryteriami wstrzykniętymi jako system
+prompt i wymuszonym JSON-em na wyjściu. W trakcie wdrażania okazało się, że
+**GitHub Models zostało całkowicie wycofane 30 lipca 2026** — usługa nie istnieje,
+`actions/ai-inference@v1` zwraca `410 ... scheduled retirement brownout`. Zamiast
+przepinać się na klucz API (Anthropic/OpenRouter) albo na Copilot CLI (wymaga
+licencji), okazało się, że **natywny GitHub Copilot PR reviewer** już działa na
+tym repo automatycznie na każdym PR — za darmo, bez dodatkowej konfiguracji — i
+faktycznie recenzuje kod względem tych samych zasad inżynierskich (patrz PR #1:
+Copilot znalazł realną niespójność między komunikatem walidacji a rzeczywistą
+regułą). To jest teraz "agent w pipeline" dla 10xChampion: `ci.yml` pilnuje
+lint/typecheck/testów/builda mechanicznie, a Copilot PR reviewer daje
+merytoryczny, tekstowy review na każdym PR — dokładnie kategorie dowodu z lekcji
+(pipeline z jobem, logi, komentarz LLM na PR).
 
 | #   | Kryterium                                                                                                                                                                                                            | Typ          | Uzasadnienie                                                                                                                                             |
 | --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
