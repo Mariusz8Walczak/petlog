@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+.svelte-kit/
+build/
+dist/
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# local data (SQLite db file)
+data/
+*.db
+*.db-journal
+
+# IDE
+.idea/
+.vscode/
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# NOTE: docs/ and context/ are intentionally NOT ignored — tracked in git
+# (course material + PRD/tech-stack/roadmap/test-plan foundation docs)
