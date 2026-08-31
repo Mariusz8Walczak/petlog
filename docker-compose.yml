@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    ports:
+      # Override with e.g. `HOST_PORT=3050 docker compose up` if 3000 is
+      # already taken by something else on your machine.
+      - '${HOST_PORT:-3000}:3000'
+    env_file:
+      - .env
+    environment:
+      # Relative to /app (the container's WORKDIR) — matches the ./data volume
+      # mount below, so this must stay a relative "file:./data/..." path
+      # regardless of what DATABASE_URL is set to for local (non-Docker) dev.
+      DATABASE_URL: file:./data/petlog.db
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - petlog
+
+# Pinned to an out-of-the-way subnet: this dev machine already has many other
+# docker-compose projects' networks registered, and Docker's default address
+# pool can run out ("all predefined address pools have been fully subnetted").
+networks:
+  petlog:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.211.88.0/24
