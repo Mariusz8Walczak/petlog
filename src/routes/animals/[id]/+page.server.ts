@@ -42,7 +42,9 @@ export const actions: Actions = {
 		const note = String(formData.get('note') ?? '').trim();
 
 		if (!measuredAt || !isValidWeightKg(weightKg)) {
-			return fail(400, { error: 'Podaj poprawną wagę (0–150 kg) i datę pomiaru.' });
+			return fail(400, {
+				error: 'Podaj poprawną wagę (większą od 0, maks. 150 kg) i datę pomiaru.'
+			});
 		}
 
 		await db.insert(weightLogs).values({
