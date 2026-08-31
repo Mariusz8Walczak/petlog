@@ -8,6 +8,11 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      # vite build's SvelteKit postbuild "analyse" step imports server code
+      # (src/lib/server/db/index.ts) to inspect routes, which throws if this
+      # isn't set — no real DB connectivity is needed for that, just a value.
+      DATABASE_URL: file:./data/petlog.db
     steps:
       - uses: actions/checkout@v4
 
