@@ -1,0 +1,4 @@
+# Shell scripts run inside Linux Docker containers — must always keep LF line
+# endings (a CRLF shebang line breaks `#!/bin/sh` in the container), regardless
+# of core.autocrlf on a contributor's Windows checkout.
+*.sh text eol=lf
