@@ -1,10 +1,10 @@
 ---
-title: "AI Internal Builders: wewnętrzne narzędzia, serwisy i automatyzacje"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'AI Internal Builders: wewnętrzne narzędzia, serwisy i automatyzacje'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m5-l1/assets/cover.jpg)
@@ -73,7 +73,7 @@ Ta środkowa kategoria, **uzupełnianie** istniejących systemów, jest najważn
 
 Uzupełnienie świadomie nie udaje systemu źródłowego: nie zastępuje GitHuba, Lineara, Jiry ani CI, tylko czyta z nich sygnały, porządkuje je i odsyła ludzi do miejsc, gdzie decyzja naprawdę powinna zostać podjęta.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l1-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l1-lesson-draft-1-10x.png)
 
 Zwróć uwagę na ostatni krok. Cienki helper nie musi od razu stać się aplikacją, agentem w SDK, pipeline'em albo rejestrem artefaktów. Najpierw ma odpowiedzieć na pytanie: czy ten problem w ogóle zasługuje na stałą obsługę?
 
@@ -168,7 +168,7 @@ Dopytać właściciela PAY-412, sprawdzić nieudany job w pipeline'ie wydania i 
 
 To nie pełny system zarządzania projektem, tylko mały widok: łączy rozproszone sygnały i podpowiada, gdzie zespół powinien spojrzeć najpierw.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l1-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l1-lesson-draft-2-10x.png)
 
 AI pomaga tu głównie w dwóch miejscach. Potrafi streścić chaotyczny tekst z issue, PR-ów i komentarzy oraz nazwać wzorce: "to wygląda jak brak właściciela", "to wygląda jak rozjazd statusu", "to wygląda jak ryzyko release'u".
 

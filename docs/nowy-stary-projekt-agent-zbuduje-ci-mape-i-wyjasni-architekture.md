@@ -1,10 +1,10 @@
 ---
-title: "Nowy-stary projekt? Agent zbuduje Ci mapę i wyjaśni architekturę"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Nowy-stary projekt? Agent zbuduje Ci mapę i wyjaśni architekturę'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m4-l2/assets/cover.png)
@@ -32,9 +32,9 @@ W tej lekcji nauczysz się procesu, który rozwiązuje oba problemy. Roboczo naz
 Efektem będzie artefakt o nazwie **Mapa projektu**.
 
 > **Mapa projektu** to operacyjna mapa terytorium projektu legacy. Zbierasz tanie sygnały z CLI, prosisz agenta o syntezę i dostajesz krótki artefakt: moduły, entry pointy, kierunki zależności, cykle, wrażliwe obszary, niewiadome oraz miejsca, które trzeba zabezpieczyć przed większą zmianą.
-> 
+>
 > Po co nam ta mapa? Żeby nie spalać okna kontekstowego na losowe czytanie plików i nie zmieniać legacy na ślepo. Mapa mówi agentowi i człowiekowi: "tu jest rdzeń systemu, tu są ryzyka, tu zmiana może przejść przez kilka warstw, tutaj najpierw sprawdź dowody".
-> 
+>
 > Ważne: Prezentujemy jeden z przykładowych formatów takiej mapy. W swoich projektach te praktyki możesz dostosować do swoich potrzeb i pogłębić zakres wykonywanych zapytań.
 
 Będziemy zapisywać ją w repo jako `context/map/repo-map.md`. To nie ma być esej dla człowieka ani zrzut z chatu. To ma być format przyjazny agentowi: krótkie sekcje, konkretne listy, ślady dowodów z komend, jawne `niewiadome` i wyraźne miejsca, w których trzeba uważać przed większą zmianą.
@@ -68,7 +68,7 @@ To zbyt wiele naraz. Agent może wtedy poprawnie nazwać kilka katalogów, ale n
 
 Dlatego zamiast pełnego zrzutu robimy najpierw szeroki skan i wyciągamy kontekst klasycznymi narzędziami.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-1-10x.png)
 
 Zwróć uwagę na różnicę w obu podejściach. Narzędzia CLI nie "rozumieją architektury" za ciebie. One redukują szum.
 
@@ -92,7 +92,7 @@ W tej lekcji wykonujemy **Wide Scan** i kończymy Mapą projektu. W kolejnej lek
 
 Mapa sama w sobie ma już odpowiedzieć na praktyczne pytanie: "gdzie w tym legacy muszę uważać?".
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-2-10x.png)
 
 Taka kolejność pracy chroni cię przed dwoma błędami.
 
@@ -155,7 +155,7 @@ Nie musisz od razu wiedzieć, jaka komenda będzie idealna. Możesz zapytać: "c
 
 W Wide Scan nie chodzi więc o to, żeby agent sam wymyślił architekturę. Chodzi o pętlę:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-3-10x.png)
 
 To połączenie jest mocniejsze niż samo klikanie po eksploratorze plików i bezpieczniejsze niż wrzucanie agentowi całego repo. Najpierw każesz narzędziom zebrać dowody. Dopiero potem prosisz agenta o interpretację.
 
@@ -171,7 +171,7 @@ To połączenie jest mocniejsze niż samo klikanie po eksploratorze plików i be
 
 Każda składowa odpowiada na inne pytanie. Dopiero razem dają Mapę projektu, na której warto podejmować decyzje. Ważne: nie czekasz z interpretacją do końca. Po każdej składowej zapisujesz, co już wynika dla pracy w legacy.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-4-10x.png)
 
 W poniższych przykładach pracujemy na repozytorium **Mattermost**, czyli platformie open-source do komunikacji zespołowej (backend Go, frontend React/TypeScript). To projekt z wieloletnią historią, dziesiątkami kontrybutorów i kilkoma wyraźnymi warstwami: `server/channels` jako logika domenowa, `webapp/channels` jako produkcyjny UI, `server/public` jako publiczne modele i kontrakt API. I, co najważniejsze, ze skalą rzędu miliona linii kodu, której w całości nie wciśniesz w okno kontekstowe żadnego modelu z 2026 roku. To realne legacy, które możesz sam sprawdzić.
 
@@ -653,7 +653,7 @@ Masz cztery rodziny. Każda odpowiada na inny typ pytania.
 
 **Agentic search** to iteracyjne zawężanie przez agenta: stawia hipotezę, odpala narzędzie, czyta wynik, zmienia kierunek. To jest właściwe w Deep Focus. W Wide Scan musi być kontrolowane, bo inaczej agent zbacza w losowy obszar i zużywa budżet kontekstowy na czytanie starego adaptera.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-5-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-5-10x.png)
 
 Nie traktuj tych rodzin jak rankingu. Jeśli pytasz "gdzie są endpointy?", zacznij od lexical albo structural. Jeśli pytasz "kto importuje moduł płatności?", weź graf zależności. Jeśli pytasz "gdzie jest definicja tego typu?", użyj symbol search. Jeśli pytasz "który feature przepływa przez te warstwy?" — to już temat kolejnej lekcji, Analiza feature z AI (M4L3).
 
@@ -669,7 +669,7 @@ Nie traktuj tych rodzin jak rankingu. Jeśli pytasz "gdzie są endpointy?", zacz
 
 Najlepszy workflow:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-6-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l2-lesson-draft-6-10x.png)
 
 ### Dwa znaczenia "semantic search"
 

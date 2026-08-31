@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -19,7 +20,7 @@
 <ul class="mb-8 flex flex-col gap-2" data-testid="animal-list">
 	{#each data.animals as animal (animal.id)}
 		<li class="flex items-center justify-between rounded border border-gray-200 bg-white px-4 py-3">
-			<a href="/animals/{animal.id}" class="hover:underline">
+			<a href={resolve('/animals/[id]', { id: animal.id })} class="hover:underline">
 				<span class="font-medium">{animal.name}</span>
 				<span class="text-sm text-gray-500">
 					· {speciesLabel[animal.species] ?? animal.species}

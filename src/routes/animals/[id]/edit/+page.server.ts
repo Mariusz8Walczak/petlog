@@ -26,7 +26,12 @@ export const actions: Actions = {
 
 		await db
 			.update(animals)
-			.set({ name, species: species as (typeof SPECIES)[number], breed: breed || null, birthDate: birthDate || null })
+			.set({
+				name,
+				species: species as (typeof SPECIES)[number],
+				breed: breed || null,
+				birthDate: birthDate || null
+			})
 			.where(eq(animals.id, animal.id));
 
 		throw redirect(303, `/animals/${animal.id}`);

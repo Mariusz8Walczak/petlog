@@ -1,10 +1,10 @@
 ---
-title: "Modernizacja legacy z DDD: wydzielaj domeny, potem deleguj Agentowi"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Modernizacja legacy z DDD: wydzielaj domeny, potem deleguj Agentowi'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m4-l5/assets/cover.png)
@@ -58,7 +58,7 @@ W rzeczywistości, to "3xAccount" powinno być rozbite na zupełnie inne terminy
 
 ```
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l5-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l5-lesson-draft-1-10x.png)
 
 W takiej strukturze nikogo nie dziwi, że "obliczamy bieżący stan `BankAccount`", a "`UserProfile` ma brakujący email".
 
@@ -87,17 +87,17 @@ Symulowany wywiad z ekspertem można stosować na samym początku projektu lub w
 Zaczynamy od prostego pytania-filtru do wybranego AI (to akurat rozmowa z ChatemGPT):
 
 > Q: Czym są fiszki?
-> 
+>
 > A: Fiszki to małe karty do nauki, zwykle używane do zapamiętywania pojęć, słówek, definicji, wzorów albo faktów.
-> 
+>
 > Q: A czym jest SRS?
-> 
+>
 > A: SRS to Spaced Repetition System, czyli system powtórek w odstępach czasu. W praktyce: uczysz się czegoś na fiszce, a system decyduje, kiedy pokazać ci ją ponownie.
 
 Widać, że model stojący za tym rozwiązaniem wie, w jakim świecie działa nasza aplikacja. Idziemy dalej.
 
 > Q: Załóżmy, że buduję aplikację do tworzenia i zarządzania fiszkami. Jakie 3 kluczowe procesy biznesowe decydują o odbiorze takiej aplikacji przez użytkownika? Co muszę wiedzieć albo o co zadbać, żeby to narzędzie dawało realną wartość?
-> 
+>
 > A: W aplikacji do fiszek użytkownik rzadko ocenia wartość po samym „tworzeniu kart”. Odbiór produktu zależy głównie od tego, czy aplikacja pomaga mu regularnie wracać do właściwych rzeczy, czuć postęp i nie tonąć w chaosie materiału. A: W wielu aplikacjach to się zlewa. Użytkownik wrzuca fragment książki, robi notatkę, dopisuje pytanie, generuje kilka kart i potem nie wie, co właściwie jest czym. Dla systemu to też ma znaczenie: inaczej traktujesz surowy materiał, inaczej notatkę, a inaczej gotową fiszkę nadającą się do powtórek. A: ...
 
 Nasz wirtualny ekspert domenowy może być znakomitym źródłem wymagań oraz konsultacji niejasnych procesów. Jako osoby techniczne skupiamy się przede wszystkim na narzędziach, językach i frameworkach, a agent doprecyzowujący dla nas "jak to działa w rzeczywistości" może podsunąć krytycznie ważne podpowiedzi.
@@ -105,11 +105,11 @@ Nasz wirtualny ekspert domenowy może być znakomitym źródłem wymagań oraz k
 I to na różnym poziomie abstrakcji. Nawet tym bezpośrednio mapującym się na kod.
 
 > Q: Jakie są 3 najczęściej wybierane algorytmy do powtórek? Czym one się różnią? Przedstaw wyniki w formie tabeli i opisz trade-offs do wyboru jednego z nich.
-> 
+>
 > A: Leitner to bardziej mechanika organizacji kart niż model pamięci. Użytkownik może łatwo zrozumieć: „ta karta jest w pudełku 1, więc powtarzam ją często; ta jest w pudełku 5, więc rzadko”. To dobre dla prostoty, ale słabe dla precyzji.
-> 
+>
 > SM-2 wprowadza już pojęcie indywidualnego rytmu karty: karta ma interwał, historię odpowiedzi i współczynnik łatwości. Oryginalny SM-2 pochodzi z SuperMemo; Anki używało przez lata wariantu inspirowanego SM-2, z własnymi zmianami, m.in. inną liczbą przycisków odpowiedzi.
-> 
+>
 > FSRS idzie krok dalej: zamiast tylko przesuwać interwały według prostych reguł, próbuje modelować pamięć bardziej bezpośrednio. Implementacje FSRS opisują go jako model oparty na zmiennych typu Difficulty, Stability i Retrievability, czyli trudność, stabilność wspomnienia i prawdopodobieństwo przypomnienia.
 
 Możemy odkrywać algorytmy, zasady rządzące światem oraz zakulisowe elementy procesów, które wydają się oczywiste (sprawdź chociażby jak wygląda proces podróży paczki od nadawcy do odbiorcy).
@@ -117,7 +117,7 @@ Możemy odkrywać algorytmy, zasady rządzące światem oraz zakulisowe elementy
 A zbliżając się już do samego kodu - ekspert może nam wreszcie zdefiniować pojęcia, które w danej domenie występują szczególnie często. To referencja do nazewnictwa klas, metod i pól w kodzie. Bazujemy tutaj na właściwości LLMów, które te często występujące pojęcia wykuwają na pamięć:
 
 > Q: Zależy mi na spójnej terminologii, która odwzorowuje rzeczywistość. Podaj przykłady 5 nieoczywistych terminów z tej domeny, które nieświadomy programista może nazwać zupełnie inaczej, prowadząc do błędów w komunikacji zespołowej i implementacji systemu.
-> 
+>
 > A: 1) Review (a nie Test, Quiz, Practice, Attempt) A: 2) Due Card (a nie Active, Available, Pending, Next, Unfinished) A: ...
 
 Tego typu rozmowę można prowadzić tak długo, aż daną domenę poznamy na akceptowalnym poziomie. Możesz to przekuć na plik kontekstowy, który będzie referencją w researchach, planach czy implementacji kolejnych funkcjonalności. Agent pozwala ci nazwać rzeczy we właściwy sposób i uniknąć problemu "3xAccount".
@@ -132,15 +132,26 @@ Mechanika jest prosta. W pliku `index.ts` definiujesz dwóch agentów (model plu
 
 ```ts
 new Forum({
-  threadName: "spaced-repetition-interview",
-  rounds: 3,
-  agents: [
-    { agentId: "beginner-developer", model: orModel("openai/gpt-4o-mini"), personality: BEGINNER_DEVELOPER() },
-    { agentId: "spaced-repetition-expert", model: orModel("anthropic/claude-sonnet-4.6"), personality: SPACED_REPETITION_EXPERT() },
-  ],
-  summarizer: { agentId: "learning-insights", model: orModel("openai/gpt-4o"), personality: LEARNING_INSIGHTS },
+	threadName: 'spaced-repetition-interview',
+	rounds: 3,
+	agents: [
+		{
+			agentId: 'beginner-developer',
+			model: orModel('openai/gpt-4o-mini'),
+			personality: BEGINNER_DEVELOPER()
+		},
+		{
+			agentId: 'spaced-repetition-expert',
+			model: orModel('anthropic/claude-sonnet-4.6'),
+			personality: SPACED_REPETITION_EXPERT()
+		}
+	],
+	summarizer: {
+		agentId: 'learning-insights',
+		model: orModel('openai/gpt-4o'),
+		personality: LEARNING_INSIGHTS
+	}
 });
-
 ```
 
 Uruchomienie to trzy kroki: sklonuj repozytorium (link powyżej), ustaw `OPENROUTER_API_KEY` w pliku `.env` (jeden klucz daje dostęp do modeli wielu dostawców przez OpenRouter) i odpal `npm start`. W terminalu będziesz na żywo obserwował przebieg rozmowy.
@@ -210,7 +221,7 @@ Wróćmy do generacji fiszek w 10xCards. PRD opisuje „sesję generacji" jako b
 
 Na to DDD ma swoją taktyczną odpowiedź: **agregat.** Agregat to granica spójności - jeden byt, który jest **jedynym** strażnikiem swojego niezmiennika. Wszystko, co chce zmienić jego stan, musi przejść przez jego metody, a metoda, która próbuje złamać regułę, rzuca nazwany błąd domenowy zamiast cicho zapisać niespójność.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l5-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l5-lesson-draft-2-10x.png)
 
 Wyciągnięcie takiego niezmiennika z legacy w agregat-strażnik to robota, którą również możesz oddać agentowi. Tym razem nie prosisz go o mapę, tylko o **plan refaktoru**, który wskaże najważniejszą regułę i zaprojektuje jej egzekwowanie w jednym miejscu:
 
@@ -273,7 +284,7 @@ To jest właśnie przeciek. I ma dwa koszty. Pierwszy: kiedy zechcesz wymienić 
 
 DDD nazywa lekarstwo **Anti-Corruption Layer** (ACL). To cienka warstwa na granicy z zależnością, która tłumaczy jej język na twój i z powrotem - tak, żeby reszta kodu nigdy nie dotykała obcego kształtu bezpośrednio. W praktyce sprowadza się to do dwóch rzeczy: domenowego value objectu, który jest jedynym miejscem wiedzy o kształcie zależności, oraz **wąskiego portu** \- interfejsu opisanego w języku twojej domeny - który implementuje **adapter** owijający konkretną bibliotekę. Reszta kodu zna tylko port.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l5-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l5-lesson-draft-3-10x.png)
 
 Identyfikację najgorszego przecieku i projekt ACL znów możesz oddać agentowi:
 
@@ -412,7 +423,7 @@ Zauważ, że ani razu nie porzucasz workflow, który budowałeś przez cały kur
 
 I to jest właściwy sposób patrzenia na modernizację legacy z AI: nie jednorazowe wielkie przepisanie, tylko **powtarzalny cykl** \- odkryj domenę, nazwij rozjazdy, zabezpiecz niezmienniki, a potem podaj te ustalenia z powrotem do tych samych skilli, które dowiozły ci MVP. Z każdą rundą kod jest bliżej tego, jak naprawdę działa biznes - i właśnie dlatego zostaje możliwy do utrzymania za tydzień, miesiąc i kwartał.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l5-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l5-lesson-draft-4-10x.png)
 
 ## 🧑🏻‍💻 Zadania praktyczne
 

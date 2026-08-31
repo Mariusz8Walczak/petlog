@@ -7,6 +7,7 @@ spadek lub wzrost), bo dane trzeba by porównywać ręcznie, wpis po wpisie, i
 łatwo to pominąć w codziennym pośpiechu.
 
 **Pokrycie:**
+
 - Test jednostkowy (Vitest) — `computeWeightTrend()`:
   - spadek >10% w oknie 30 dni → `alert`
   - zmiana w granicach ±5% → `stable`
@@ -22,6 +23,7 @@ spadek lub wzrost), bo dane trzeba by porównywać ręcznie, wpis po wpisie, i
 na błędny trop zamiast pomóc.
 
 **Pokrycie:**
+
 - Test jednostkowy — `suggestTreatments()`: zwraca tylko wpisy tego samego
   zwierzęcia, dopasowane po słowie kluczowym objawu, z `pomogło` na pierwszym
   miejscu listy.
@@ -32,6 +34,7 @@ na błędny trop zamiast pomóc.
 (istotne, gdy w przyszłości pojawi się więcej niż jedno konto, patrz roadmap.md).
 
 **Pokrycie:**
+
 - Test integracyjny: zapytanie o `animals` filtruje po `owner_id` sesji; próba
   pobrania zwierzęcia innego właściciela zwraca 404/pustą odpowiedź.
 

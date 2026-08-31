@@ -29,7 +29,9 @@ describe('suggestTreatments', () => {
 		// The function receives records already scoped to one animal by the caller
 		// (see prd.md: cross-animal matching is out of MVP scope). Simulate the
 		// caller passing only animal A's records and confirm nothing extra leaks in.
-		const animalARecords = [record({ healthEventId: 'a-event', symptom: 'wymioty', treatmentId: 't-a' })];
+		const animalARecords = [
+			record({ healthEventId: 'a-event', symptom: 'wymioty', treatmentId: 't-a' })
+		];
 		const result = suggestTreatments(animalARecords, 'wymioty');
 		expect(result.map((r) => r.treatmentId)).toEqual(['t-a']);
 	});
@@ -60,7 +62,11 @@ describe('suggestTreatments', () => {
 			record({ treatmentId: 't-worsened', outcome: 'worsened', occurredAt: '2026-06-01' })
 		];
 		const result = suggestTreatments(records, 'wymioty');
-		expect(result.map((r) => r.treatmentId)).toEqual(['t-helped-new', 't-helped-old', 't-worsened']);
+		expect(result.map((r) => r.treatmentId)).toEqual([
+			't-helped-new',
+			't-helped-old',
+			't-worsened'
+		]);
 	});
 
 	it('returns an empty array for an empty/blank new symptom', () => {

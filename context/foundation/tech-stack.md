@@ -1,12 +1,14 @@
 # Tech Stack — PetLog
 
 ## Warstwa aplikacji
+
 - **SvelteKit** (adapter-node) — full-stack: routing, server load functions,
   form actions jako backend bez osobnego API layera.
 - **TypeScript** wszędzie.
 - **pnpm** jako package manager.
 
 ## Dane
+
 - **SQLite** — plik na wolumenie Dockera, brak zewnętrznego serwera DB (pasuje do
   jednego gospodarstwa domowego / jednej instancji).
 - **Drizzle ORM** + `drizzle-kit` do migracji i schematu.
@@ -26,6 +28,7 @@
   pominął. Poprawione w commicie `build: Docker packaging`.
 
 ## Auth
+
 - Własna implementacja session-based (wzorzec Lucia "Learn" — biblioteka Lucia jest
   zarchiwizowana, ale wzorzec pozostaje aktualnym standardem: sesje po stronie
   serwera, nie JWT w cookie).
@@ -40,6 +43,7 @@
   połowy 30-dniowego czasu życia) w `hooks.server.ts`.
 
 ## Uruchamianie w Dockerze — migracje w runtime
+
 `drizzle-kit` to `devDependency` (celowo pominięty w slim runtime stage), więc
 migracje w kontenerze **nie** korzystają z `drizzle-kit migrate`. Zamiast tego
 `docker-entrypoint.sh` przy każdym starcie kontenera odpala
@@ -51,6 +55,7 @@ oba już i tak w `dependencies`) i czyta pliki SQL z `drizzle/`. Analogicznie
 `docker compose exec app node scripts/docker-seed.mjs`.
 
 ## UI
+
 - **Tailwind CSS** — tylko dla szybkości pisania formularzy/tabel. Styling nie jest
   oceniany w projekcie zaliczeniowym, więc minimalizm > estetyka.
 - Wykres wagi: proste inline SVG (sparkline) renderowane server-side z danych —
@@ -58,6 +63,7 @@ oba już i tak w `dependencies`) i czyta pliki SQL z `drizzle/`. Analogicznie
   trendu (`stable`/`watch`/`alert`); wykres to nice-to-have.
 
 ## Testy
+
 - **Vitest** — testy jednostkowe logiki domenowej: `computeWeightTrend()`,
   `suggestTreatments()`. Pliki `*.test.ts` obok logiki, w
   `src/lib/server/domain/`.
@@ -71,6 +77,7 @@ oba już i tak w `dependencies`) i czyta pliki SQL z `drizzle/`. Analogicznie
   briefu).
 
 ## Deployment
+
 - **Docker + docker-compose**, jeden kontener (SvelteKit `adapter-node`, `node build`
   na porcie np. 3000).
 - SQLite plik montowany jako wolumen (`./data:/app/data`), żeby dane przetrwały
@@ -80,6 +87,7 @@ oba już i tak w `dependencies`) i czyta pliki SQL z `drizzle/`. Analogicznie
   strukturę projektu i działanie w kontenerze.
 
 ## Struktura katalogów (faktyczna)
+
 ```
 src/
   lib/

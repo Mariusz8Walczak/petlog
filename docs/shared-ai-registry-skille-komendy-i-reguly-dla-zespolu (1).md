@@ -1,10 +1,10 @@
 ---
-title: "Shared AI Registry: skille, komendy i reguły dla zespołu"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Shared AI Registry: skille, komendy i reguły dla zespołu'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m5-l4/assets/cover.jpg)
@@ -57,7 +57,7 @@ Fundament to podział na dwa światy. Z jednej strony masz **repozytorium źród
 
 Między tymi światami działa **instalator**: kod, który po stronie konsumenta wciąga artefakty, układa je tam, gdzie czyta je twoje narzędzie, i potrafi je później czysto zaktualizować albo usunąć. W najprostszym modelu instalatorem jest skrypt uruchamiany przez menedżer pakietów po pobraniu paczki z rejestru. W kolejnych modelach ta warstwa bierze na siebie coraz więcej.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l4-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l4-lesson-draft-1-10x.png)
 
 A jak wygląda samo repozytorium źródła prawdy od środka? W praktyce to po prostu jeden pakiet, a artefakty leżą w nim poukładane według typu:
 
@@ -112,12 +112,11 @@ Całe "stawianie infrastruktury" to jedno pole w `package.json`, w repozytorium 
 
 ```json
 {
-  "name": "@twoj-zespol/ai-toolkit",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  }
+	"name": "@twoj-zespol/ai-toolkit",
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	}
 }
-
 ```
 
 To pole to cała konfiguracja po stronie producenta: `publishConfig` mówi tylko, _dokąd_ publikować. Samo uwierzytelnianie publikacji dokłada CI osobno, bo tokena nigdy nie commitujemy do repo.
@@ -133,7 +132,7 @@ Linii z tokenem (`//npm.pkg.github.com/:_authToken=${GH_PKG_TOKEN}`) nie wpisuje
 
 To wystarcza, żeby przejść z konfiguracji do zwykłego pipeline'u pakietu npm.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l4-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l4-lesson-draft-2-10x.png)
 
 W repozytorium źródła prawdy pakujesz artefakty w jedną paczkę npm. CI na merge do głównej gałęzi publikuje ją do rejestru. Każde repo konsumenta instaluje ją jak zwykłą zależność. Zmieniłeś którąś regułę albo dopracowałeś skilla? Podbijasz wersję, robisz merge, a reszta zespołu dostaje nowość jednym `install`. To wciąż te same dwa konteksty: zmiana wychodzi z repo źródła prawdy, a wszystkie repa konsumentów ją zaciągają.
 
@@ -167,24 +166,23 @@ Trudniej jest na zewnętrznych platformach buildów, jak Cloudflare Pages czy Wo
 W produkcyjnym toolkicie ta logika nie jest instrukcją w README, tylko kodem instalatora. Nie musisz czytać go linijka po linijce. Liczą się trzy własności: idempotencja (uruchom dwa razy, wynik ten sam), brak sekretów w repo i łagodne obejście się z istniejącym `package.json` użytkownika. W skrócie: najpierw dopisuje mapowanie rejestru do `.npmrc`, a potem dopina `preinstall` tylko wtedy, gdy go jeszcze nie ma:
 
 ```ts
-const REGISTRY_LINE = "@twoj-zespol:registry=https://npm.pkg.github.com";
+const REGISTRY_LINE = '@twoj-zespol:registry=https://npm.pkg.github.com';
 const PREINSTALL_SCRIPT =
-  "[ -n \"$GH_PKG_TOKEN\" ] && echo '//npm.pkg.github.com/:_authToken=${GH_PKG_TOKEN}' >> .npmrc || true";
+	'[ -n "$GH_PKG_TOKEN" ] && echo \'//npm.pkg.github.com/:_authToken=${GH_PKG_TOKEN}\' >> .npmrc || true';
 
 function ensureGitHubPackagesAuth(projectRoot: string) {
-  ensureLine(path.join(projectRoot, ".npmrc"), REGISTRY_LINE);
+	ensureLine(path.join(projectRoot, '.npmrc'), REGISTRY_LINE);
 
-  const pkg = readPackageJson(projectRoot);
-  const existing = (pkg.scripts?.preinstall ?? "").trim();
-  pkg.scripts ??= {};
-  pkg.scripts.preinstall = existing.includes("GH_PKG_TOKEN")
-    ? existing
-    : existing
-      ? `${existing}; ${PREINSTALL_SCRIPT}`
-      : PREINSTALL_SCRIPT;
-  writePackageJson(projectRoot, pkg);
+	const pkg = readPackageJson(projectRoot);
+	const existing = (pkg.scripts?.preinstall ?? '').trim();
+	pkg.scripts ??= {};
+	pkg.scripts.preinstall = existing.includes('GH_PKG_TOKEN')
+		? existing
+		: existing
+			? `${existing}; ${PREINSTALL_SCRIPT}`
+			: PREINSTALL_SCRIPT;
+	writePackageJson(projectRoot, pkg);
 }
-
 ```
 
 To ważniejszy przykład niż sama linia w shellu: pokazuje, że dystrybucja artefaktów AI szybko staje się zwykłą inżynierią produktu.
@@ -269,21 +267,20 @@ Sekret tkwi w idempotencji. Przy każdej aktualizacji instalator odnajduje tę p
 W najprostszym wariancie taka aktualizacja sprowadza się do operacji: znajdź blok, wytnij stary środek, wstaw nowy. To wystarczy, żeby instalator był przewidywalny:
 
 ```ts
-const BEGIN = "<!-- BEGIN @twoj-zespol/ai-toolkit -->";
-const END = "<!-- END @twoj-zespol/ai-toolkit -->";
+const BEGIN = '<!-- BEGIN @twoj-zespol/ai-toolkit -->';
+const END = '<!-- END @twoj-zespol/ai-toolkit -->';
 
 function applyRules(existing: string, teamRules: string) {
-  const block = `${BEGIN}\n${teamRules.trim()}\n${END}`;
-  const start = existing.indexOf(BEGIN);
-  const end = existing.indexOf(END);
+	const block = `${BEGIN}\n${teamRules.trim()}\n${END}`;
+	const start = existing.indexOf(BEGIN);
+	const end = existing.indexOf(END);
 
-  if (start !== -1 && end !== -1) {
-    return existing.slice(0, start) + block + existing.slice(end + END.length);
-  }
+	if (start !== -1 && end !== -1) {
+		return existing.slice(0, start) + block + existing.slice(end + END.length);
+	}
 
-  return existing.trimEnd() + "\n\n" + block + "\n";
+	return existing.trimEnd() + '\n\n' + block + '\n';
 }
-
 ```
 
 Jeżeli jeden znacznik istnieje, a drugi zniknął po ręcznej edycji, produkcyjny instalator nie udaje, że nic się nie stało. To przypadek uszkodzonego bloku, który trzeba obsłużyć osobno, żeby przy kolejnej instalacji nie zdublować reguł.
@@ -292,19 +289,18 @@ Jeżeli jeden znacznik istnieje, a drugi zniknął po ręcznej edycji, produkcyj
 
 ```json
 {
-  "package": "@przeprogramowani/10x-cli",
-  "version": "1.2.0",
-  "lessonId": "m1l5",
-  "tool": "claude-code",
-  "files": {
-    "skills": {
-      "10x-init": { "files": ["SKILL.md"] },
-      "10x-shape": { "files": ["references/prd-schema.md", "SKILL.md"] }
-    },
-    "configs": ["settings.json.template", "mcp.json.template"]
-  }
+	"package": "@przeprogramowani/10x-cli",
+	"version": "1.2.0",
+	"lessonId": "m1l5",
+	"tool": "claude-code",
+	"files": {
+		"skills": {
+			"10x-init": { "files": ["SKILL.md"] },
+			"10x-shape": { "files": ["references/prd-schema.md", "SKILL.md"] }
+		},
+		"configs": ["settings.json.template", "mcp.json.template"]
+	}
 }
-
 ```
 
 Dzięki tej liście deinstalacja jest pewna: instalator usuwa dokładnie te pliki, które kiedyś dodał, zamiast zgadywać po zawartości katalogu. Co ważne, manifest jest samodzielny. Sprzątanie nie zależy od tego, czy `node_modules` wciąż istnieje, ani od hooków menedżera pakietów, które przy usuwaniu zależności nie zawsze się odpalają.
@@ -326,7 +322,7 @@ Te dwie rzeczy przesuwają dystrybucję z konfiguracji pakietu w stronę CLI.
 
 Architektonicznie ten produkt to trzy wymienne warstwy.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l4-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l4-lesson-draft-3-10x.png)
 
 **Źródło prawdy** to miejsce, gdzie leżą zbudowane bundle artefaktów. W kursie to prywatny content zbudowany z `10x-toolkit`, ale w firmie może to być dowolne repo z artefaktami.
 
@@ -338,26 +334,25 @@ W `10x-cli` ta decyzja jest zwykłą konfiguracją profili narzędzi:
 
 ```ts
 export const PROFILES = {
-  "claude-code": {
-    skillPath: (name) => `.claude/skills/${name}/SKILL.md`,
-    promptPath: (name) => `.claude/prompts/${name}.md`,
-    rulesFile: "CLAUDE.md",
-    manifestDir: ".claude",
-  },
-  cursor: {
-    skillPath: (name) => `.cursor/skills/${name}/SKILL.md`,
-    promptPath: (name) => `.cursor/prompts/${name}.md`,
-    rulesFile: ".cursor/rules/10x-course.mdc",
-    manifestDir: ".cursor",
-  },
-  codex: {
-    skillPath: (name) => `.agents/skills/${name}/SKILL.md`,
-    promptPath: (name) => `.agents/prompts/${name}.md`,
-    rulesFile: "AGENTS.md",
-    manifestDir: ".agents",
-  },
+	'claude-code': {
+		skillPath: (name) => `.claude/skills/${name}/SKILL.md`,
+		promptPath: (name) => `.claude/prompts/${name}.md`,
+		rulesFile: 'CLAUDE.md',
+		manifestDir: '.claude'
+	},
+	cursor: {
+		skillPath: (name) => `.cursor/skills/${name}/SKILL.md`,
+		promptPath: (name) => `.cursor/prompts/${name}.md`,
+		rulesFile: '.cursor/rules/10x-course.mdc',
+		manifestDir: '.cursor'
+	},
+	codex: {
+		skillPath: (name) => `.agents/skills/${name}/SKILL.md`,
+		promptPath: (name) => `.agents/prompts/${name}.md`,
+		rulesFile: 'AGENTS.md',
+		manifestDir: '.agents'
+	}
 };
-
 ```
 
 I to jest cały sens CLI jako "applicatora": nie musisz uczyć API konwencji każdego narzędzia. API pilnuje dostępu i zawartości, a CLI pilnuje lokalnej semantyki plików.
@@ -388,18 +383,17 @@ W skróconym kodzie nie wygląda to magicznie. CLI hashuje surową odpowiedź, p
 
 ```ts
 function verifyBundleSignature(rawBody, signature, keyId, headerHash) {
-  const computedHash = sha256(rawBody);
-  if (computedHash !== headerHash) {
-    throw new Error("Bundle content hash mismatch");
-  }
+	const computedHash = sha256(rawBody);
+	if (computedHash !== headerHash) {
+		throw new Error('Bundle content hash mismatch');
+	}
 
-  const canonical = `v1:${keyId}:${computedHash}`;
-  const valid = verifyEd25519(canonical, signature, publicKeyFor(keyId));
-  if (!valid) {
-    throw new Error("Bundle signature verification failed");
-  }
+	const canonical = `v1:${keyId}:${computedHash}`;
+	const valid = verifyEd25519(canonical, signature, publicKeyFor(keyId));
+	if (!valid) {
+		throw new Error('Bundle signature verification failed');
+	}
 }
-
 ```
 
 Najpierw integralność treści, potem autentyczność nadawcy. Bez tego CLI byłoby tylko wygodnym `curl | write`.
@@ -429,7 +423,7 @@ Z całej tabeli najważniejszy jest pierwszy wiersz: odbiorca. To on rozstrzyga 
 
 Ten wybór możesz potraktować jak prosty router:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l4-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l4-lesson-draft-4-10x.png)
 
 ### Najczęstszy błąd
 
@@ -470,7 +464,7 @@ ai-toolkit/
 ```
 
 > Uwaga: pliki `m5l4-codeartifact-spec-cicd.md` i `m5l4-codeartifact-spec-terraform.md` opisują wariant AWS (model 2). Potraktuj je jako dodatek dla zespołów, które świadomie wybierają CodeArtifact, a za bazę Zadania 3 weź ścieżkę GitHub Packages.
-> 
+>
 > Pakiet daje też trzy skille, które automatyzują tę ścieżkę zamiast przepisywać specyfikacje ręcznie: `/pack-init` (szkielet paczki npm), `/tf-registry` (Terraform pod rejestr CodeArtifact) i `/setup-cicd` (pipeline publikacji przez OIDC). Nie generują gotowca w próżni — uruchamiasz je na bazie powyższych specyfikacji, a twoim zadaniem jest wypełnić je właściwymi wartościami pod twoją konfigurację: nazwa domeny i scope, region AWS, nazwy repozytoriów, polityki uprawnień. Jeśli zostajesz przy GitHub Packages, możesz je zignorować.
 
 ## Odbierz swoją odznakę

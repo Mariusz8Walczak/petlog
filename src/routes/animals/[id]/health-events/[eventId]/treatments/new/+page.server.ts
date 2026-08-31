@@ -32,7 +32,8 @@ export const actions: Actions = {
 		const outcome = String(formData.get('outcome') ?? 'unknown');
 		const notes = String(formData.get('notes') ?? '').trim();
 
-		if (!name || !startDate) return fail(400, { error: 'Podaj nazwę leczenia i datę rozpoczęcia.' });
+		if (!name || !startDate)
+			return fail(400, { error: 'Podaj nazwę leczenia i datę rozpoczęcia.' });
 		if (!TREATMENT_OUTCOME.includes(outcome as (typeof TREATMENT_OUTCOME)[number])) {
 			return fail(400, { error: 'Nieprawidłowy skutek.' });
 		}

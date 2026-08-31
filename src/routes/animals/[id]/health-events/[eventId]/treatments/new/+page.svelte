@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -51,8 +52,16 @@
 	{/if}
 
 	<div class="flex gap-3">
-		<button type="submit" class="rounded bg-gray-900 px-3 py-2 text-white hover:bg-gray-700">Zapisz</button>
-		<a href="/animals/{data.animal.id}/health-events/{data.event.id}" class="rounded border border-gray-300 px-3 py-2">
+		<button type="submit" class="rounded bg-gray-900 px-3 py-2 text-white hover:bg-gray-700"
+			>Zapisz</button
+		>
+		<a
+			href={resolve('/animals/[id]/health-events/[eventId]', {
+				id: data.animal.id,
+				eventId: data.event.id
+			})}
+			class="rounded border border-gray-300 px-3 py-2"
+		>
 			Anuluj
 		</a>
 	</div>

@@ -1,10 +1,10 @@
 ---
-title: "Code Review w erze AI: standardy, DoD i Agent w pipeline"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Code Review w erze AI: standardy, DoD i Agent w pipeline'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m5-l3/assets/cover.jpg)
@@ -34,7 +34,7 @@ A ile potrzebujemy wiedzy o samym GHA? Dokładnie tyle, żeby agent zaczął pra
 
 Te pojęcia nie są płaską listą - układają się w hierarchię kompozycji, od całego scenariusza aż po pojedynczą akcję:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l3-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l3-lesson-draft-1-10x.png)
 
 Domyślnie GitHub udostępnia trzy rodzaje maszyn: środowisko Linuxowe (`ubuntu-latest`), macOS (`macos-latest`) i Windows (`windows-latest`). Dla scenariuszy CI/CD w stacku Node.js naturalnym wyborem jest `ubuntu-latest` \- jest szybkie, tanie i kompatybilne z większością komend, które uruchamiasz lokalnie. Co do kosztów: dla repozytoriów publicznych na standardowych runnerach GitHuba korzystasz z usługi za darmo, a dla prywatnych dostajesz domyślnie pulę darmowych minut i miejsca na dysku, po przekroczeniu której wchodzisz w cennik.
 
@@ -68,7 +68,6 @@ jobs:
         run: npm run review
         env:
           LLM_PROVIDER_API_KEY: ${{ secrets.LLM_PROVIDER_API_KEY }}
-
 ```
 
 Ten plik zawiera wszystkie poznane przed chwilą pojęcia. Mamy workflow (cały plik), jeden trigger (`pull_request` plus ręczny `workflow_dispatch`), jeden job (`review`), runnera (`ubuntu-latest`) oraz zestaw kroków - dwa z nich realizujemy gotowymi akcjami dostarczanymi z katalogu GHA (`checkout` i `setup-node`), a pozostałe uruchamiamy sami (`npm ci`, `npm run review`). Krok z agentem dostaje klucz API nie jako tekst wklejony do pliku, lecz przez `secrets` \- to wartość zdefiniowana w ustawieniach repozytorium, której nikt nie zobaczy w logach ani w historii commitów.
@@ -83,7 +82,7 @@ Composite Action to sposób na to, aby zestaw kroków scenariusza wyciągnąć d
 
 Dzięki temu kilka niezależnych, reużywalnych akcji wpinasz w jeden nadrzędny scenariusz:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l3-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l3-lesson-draft-2-10x.png)
 
 Reużywalną akcję hostujesz na dwa sposoby:
 
@@ -126,7 +125,6 @@ runs:
       shell: bash
       env:
         LLM_PROVIDER_API_KEY: ${{ inputs.api-key }}
-
 ```
 
 Zwróć uwagę na kilka elementów:
@@ -156,7 +154,6 @@ jobs:
         uses: twoj-zespol/ai-reviewer@<sha>
         with:
           api-key: ${{ secrets.LLM_PROVIDER_API_KEY }}
-
 ```
 
 Jedna uwaga bezpieczeństwa, ważna w 2026 roku bardziej niż kiedykolwiek: akcje przypinaj do konkretnego commita (`@<sha>`), a nie do ruchomego tagu w stylu `@v1`. Tag może zostać przesunięty na inny kod bez twojej wiedzy, a akcja działa wewnątrz twojego pipeline'u z dostępem do sekretów - przypięcie do SHA zamraża dokładnie ten kod, który zweryfikowałeś. To ta sama zasada ograniczonego zaufania, tyle że zwrócona w stronę cudzego kodu, który wpuszczasz do swojego procesu.
@@ -246,18 +243,17 @@ No i czas na jedno kluczowe pytanie - jak te trzy wejścia z `requirements.md`, 
 # .github/workflows/review.yml - fragment konsumenta
 - uses: actions/checkout@v4
   with:
-    fetch-depth: 0   # pełna historia - inaczej nie policzysz diffu względem bazy
+    fetch-depth: 0 # pełna historia - inaczej nie policzysz diffu względem bazy
 
 - id: diff
   run: echo "value=$(git diff origin/${{ github.base_ref }}...HEAD)" >> "$GITHUB_OUTPUT"
 
 - uses: twoj-zespol/ai-reviewer@<sha>
   with:
-    api-key:  ${{ secrets.LLM_PROVIDER_API_KEY }}
+    api-key: ${{ secrets.LLM_PROVIDER_API_KEY }}
     pr-title: ${{ github.event.pull_request.title }}
-    pr-body:  ${{ github.event.pull_request.body }}
-    diff:     ${{ steps.diff.outputs.value }}
-
+    pr-body: ${{ github.event.pull_request.body }}
+    diff: ${{ steps.diff.outputs.value }}
 ```
 
 Po stronie akcji to oznacza, że kontrakt `inputs` z `action.yml` rozszerzasz o `pr-title`, `pr-body` i `diff` \- dokładnie tym samym ruchem, którym dodaliśmy tam `api-key`. Jedna pułapka warta zapamiętania: domyślny `checkout` jest płytki (shallow), więc bez `fetch-depth: 0` polecenie `git diff` nie ma względem czego policzyć zmian i zwróci pustkę.
@@ -292,7 +288,6 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
 ```
 
 **Przykład 2: automatyczne review każdego PR-a.** Ten sam action, inny trigger i jawny `prompt` \- i z asystenta na żądanie robi się recenzent, który odzywa się sam przy każdym pull requeście. To bezpośredni odpowiednik tego, co budowaliśmy ręcznie, tyle że bez pisania agenta:
@@ -316,7 +311,6 @@ jobs:
             Dla każdego zmienionego pliku podaj konkretne sugestie.
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
 ```
 
 **Przykład 3: review według twoich kryteriów.** `prompt` to dowolny tekst, więc nic nie stoi na przeszkodzie, żeby wkleić tam tę samą listę kryteriów, którą wypracowaliśmy dla własnego agenta - albo wprost wskazać skill z repozytorium. Tak właśnie wpinamy w CI kursowy skill `10x-impl-review-ci`, co pokazujemy w sekcji Deep Dive. Dzięki temu Claude ocenia PR-a nie ogólnikowo, lecz wedle waszej Definition of Done, a wynik zwraca m.in. jako ustrukturyzowany output (JSON) do dalszych kroków scenariusza (np. bramki na merge).
@@ -372,7 +366,6 @@ tests:
       # 3. twardy warunek na polu score z naszego Definition of Done
       - type: javascript
         value: JSON.parse(output).score <= 3
-
 ```
 
 Klucz podajesz raz, jako zmienną środowiskową `OPENROUTER_API_KEY`, a potem uruchamiasz ewaluację jednym poleceniem:
@@ -418,13 +411,12 @@ Mimo że przez cały moduł budujemy "agenta", to w dotychczasowym użyciu SDK r
 ```ts
 // Reviewer jako "scorer" - jedno wejście, jedno wyjście, zero narzędzi.
 const agent = new ToolLoopAgent({
-  model: provider(modelId),
-  instructions: REVIEW_INSTRUCTIONS,
-  output: Output.object({ schema: ReviewResult }),
+	model: provider(modelId),
+	instructions: REVIEW_INSTRUCTIONS,
+	output: Output.object({ schema: ReviewResult })
 });
 
 const { output } = await agent.generate({ prompt: buildReviewPrompt(input) });
-
 ```
 
 W tej formie cała klasa `ToolLoopAgent` wygląda na zbędną ceremonię - równie dobrze moglibyśmy wywołać `generateText` i byłoby po sprawie. I to jest w porządku. Wąska, jednokrokowa pętla "diff wchodzi, werdykt wychodzi" to świadoma decyzja z naszego MVP, a nie niedoróbka.
@@ -444,37 +436,35 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const readPlan = tool({
-  // The model reads this description to decide whether to call the tool.
-  description:
-    'Read an implementation plan from context/changes/<change-id>/plan.md. ' +
-    'Returns the plan contents, or { found: false } when none exists.',
-  inputSchema: z.object({
-    target: z.string().describe("A change-id (e.g. 'oauth-login') or a plan.md path."),
-  }),
-  execute: async ({ target }) => {
-    const contents = await readPlanFromContext(target); // read from ./context
-    return contents ?? { found: false };
-  },
+	// The model reads this description to decide whether to call the tool.
+	description:
+		'Read an implementation plan from context/changes/<change-id>/plan.md. ' +
+		'Returns the plan contents, or { found: false } when none exists.',
+	inputSchema: z.object({
+		target: z.string().describe("A change-id (e.g. 'oauth-login') or a plan.md path.")
+	}),
+	execute: async ({ target }) => {
+		const contents = await readPlanFromContext(target); // read from ./context
+		return contents ?? { found: false };
+	}
 });
-
 ```
 
 Rejestracja narzędzia to dosłownie jedno pole - `tools` \- dołożone do tej samej klasy, której użyliśmy wcześniej:
 
 ```ts
 const agent = new ToolLoopAgent({
-  model: provider(modelId),
-  instructions: REVIEW_RUNNER_INSTRUCTIONS,
-  tools: { readPlan }, // <- cała różnica względem wersji "scorera"
+	model: provider(modelId),
+	instructions: REVIEW_RUNNER_INSTRUCTIONS,
+	tools: { readPlan } // <- cała różnica względem wersji "scorera"
 });
-
 ```
 
 > Budujemy tu agenta od zera, więc narzędzie do czytania plików piszemy sami. Jeśli zamiast tego sięgasz po gotowego agenta - Codex SDK albo Claude Agent SDK - czytanie repozytorium masz już w pakiecie. Zamiast dokładać narzędzie wystarczy rozszerzyć prompt (powiedzieć agentowi, że plan leży w `./context`) i ewentualnie skorygować uprawnienia do plików - resztę, czyli odnalezienie właściwego pliku, agent załatwi sam.
 
 Od tej chwili wywołanie agenta przestaje być pojedynczym strzałem - zaczyna się **pętla narzędziowa**:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l3-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l3-lesson-draft-3-10x.png)
 
 W każdym kroku model albo generuje finalną odpowiedź (i pętla się kończy), albo prosi o wywołanie narzędzia. Jeśli prosi o narzędzie, SDK waliduje argumenty względem `inputSchema`, uruchamia `execute`, dokleja wynik do kontekstu i oddaje modelowi kolejną turę. Model widzi rezultat i decyduje, co dalej - sięgnąć po kolejne narzędzie czy zamknąć review. To właśnie ta pętla zamienia opakowanie LLM-a w agenta.
 
@@ -484,11 +474,10 @@ W każdym kroku model albo generuje finalną odpowiedź (i pętla się kończy),
 import { stepCountIs } from 'ai';
 
 const agent = new ToolLoopAgent({
-  model: provider(modelId),
-  tools: { readPlan /* , ... */ },
-  stopWhen: stepCountIs(8), // krótka, przewidywalna sesja review
+	model: provider(modelId),
+	tools: { readPlan /* , ... */ },
+	stopWhen: stepCountIs(8) // krótka, przewidywalna sesja review
 });
-
 ```
 
 🚨 Istnieje też `isLoopFinished()`, które całkowicie zdejmuje limit kroków i pozwala agentowi działać, aż sam przestanie wołać narzędzia. Brzmi wygodnie, ale bez górnego limitu jeden rozbiegany przebieg potrafi spalić budżet - a na CI/CD, gdzie scenariusz odpala się przy każdym PR, koszt mnoży się przez liczbę pull requestów. Trzymaj twardy limit kroków. Dodatkowo callback `onStepFinish` daje wgląd w zużycie tokenów krok po kroku, więc koszt sesji możesz mierzyć, a nie zgadywać.
@@ -560,7 +549,6 @@ Co najważniejsze, ten sam skill da się reużyć w obu ścieżkach z poprzednie
       /10x-impl-review-ci
       Działasz w CI na pull requeście. Wykonaj skill: porównaj PR
       z jego planem, zapisz raport i opublikuj komentarz w PR.
-
 ```
 
 **Ścieżka 2: agent składany - reużywasz same kryteria.** Vercel AI SDK nie ma pojęcia skilla ani folderu `.claude/skills` \- nikt nie wczyta `SKILL.md` za ciebie, a nawet gdyby, jego mechanika zakłada runtime Claude'a, którego tu nie ma. Ale warstwa kryteriów jest _agent-agnostic_: to czysta wiedza o tym, jak oceniać diff, niezależna od tego, kto ją wykonuje. Właśnie ją wyciągasz i wstrzykujesz agentowi jako dodatkowy kontekst - przez narzędzie, które czyta ten sam plik z instrukcjami i oddaje jego treść modelowi:
@@ -571,14 +559,13 @@ import { z } from 'zod';
 
 // Te same kryteria co w skillu - wczytane z pliku i podane agentowi.
 const readReviewCriteria = tool({
-  description:
-    'Read the implementation-review criteria: the rubric for judging whether ' +
-    'a diff faithfully implements its plan. Call this after a plan is found.',
-  inputSchema: z.object({}),
-  // loadImplReviewCriteria() czyta references/impl-review-instructions.md
-  execute: async () => ({ criteria: await loadImplReviewCriteria() }),
+	description:
+		'Read the implementation-review criteria: the rubric for judging whether ' +
+		'a diff faithfully implements its plan. Call this after a plan is found.',
+	inputSchema: z.object({}),
+	// loadImplReviewCriteria() czyta references/impl-review-instructions.md
+	execute: async () => ({ criteria: await loadImplReviewCriteria() })
 });
-
 ```
 
 Dzięki takiej konstrukcji, narzędzie czyta rubrykę oceny. Agent woła je, gdy znajdzie plan, dostaje kryteria w odpowiedzi i ocenia diff względem nich. Mechanikę (skąd plan, gdzie wynik) piszesz po swojemu, ale _kryteriów_ nie wymyślasz od nowa - reużywasz tej samej prozy, która napędza gotowy skill.
@@ -591,23 +578,27 @@ Jest tu też druga strona kontrastu, który pojawił się przy naszym agencie. M
 
 Aby skill `10x-impl-review-ci` wykonywać np. w AI SDK, potrzebujemy sposobu na dostarczenie agentowi dodatkowego kontekstu (samego skilla oraz planu, względem którego wykonuje się kolejne review). W tym celu rozbudowujemy `ToolLoopAgent` o nowe narzędzia:
 
-- **`readPlan`** \- czyta plan z `context/changes/<id>/plan.md`:  
-```ts  
-// description — to po niej model decyduje, kiedy sięgnąć po narzędzie  
-description:  
-  "Read an implementation plan from context/changes/<change-id>/plan.md. " +  
-  "Accepts either a change-id (e.g. 'oauth-login') or a path to a plan.md " +  
-  "under context/changes/. Returns the plan contents when found, or " +  
-  "{ found: false } when no such plan exists so you can proceed without it.",  
+- **`readPlan`** \- czyta plan z `context/changes/<id>/plan.md`:
+
+```ts
+// description — to po niej model decyduje, kiedy sięgnąć po narzędzie
+description:
+  "Read an implementation plan from context/changes/<change-id>/plan.md. " +
+  "Accepts either a change-id (e.g. 'oauth-login') or a path to a plan.md " +
+  "under context/changes/. Returns the plan contents when found, or " +
+  "{ found: false } when no such plan exists so you can proceed without it.",
 ```
-- **`readImplReviewCriteria`** \- oddaje samą rubrykę oceny (te same kryteria, które w skillu żyją w `references/impl-review-instructions.md`):  
-```ts  
-description:  
-  "Read the implementation-review criteria: the rubric for judging whether a diff faithfully " +  
-  "implements the plan it references (plan adherence and scope discipline). This is NOT a review " +  
-  "of the plan's own quality — it grades the implementation against the plan. Call this after " +  
-  "readPlan returns found: true, then review the diff against the plan using the returned criteria.",  
+
+- **`readImplReviewCriteria`** \- oddaje samą rubrykę oceny (te same kryteria, które w skillu żyją w `references/impl-review-instructions.md`):
+
+```ts
+description:
+  "Read the implementation-review criteria: the rubric for judging whether a diff faithfully " +
+  "implements the plan it references (plan adherence and scope discipline). This is NOT a review " +
+  "of the plan's own quality — it grades the implementation against the plan. Call this after " +
+  "readPlan returns found: true, then review the diff against the plan using the returned criteria.",
 ```
+
 - **`postPrComment`** \- publikuje komentarz w PR (wprowadzając tę funkcję do agenta, powinniśmy ją usunąć z samego workflow `.yml`)
 
 #### Jak te trzy narzędzia składają się w pętlę
@@ -638,24 +629,20 @@ Przed chwilą powiedzieliśmy, że Vercel AI SDK nie ma pojęcia skilla - i na p
 Mechanizm sprowadza się do jednej funkcji - `experimental_createSkillTool`. Wskazujesz jej katalog ze skillami (folderami, z których każdy ma swój `SKILL.md`), a ona zwraca trzy rzeczy: narzędzie `skill`, którym agent wybiera konkretny skill, pliki tego skilla do wrzucenia do sandboxa oraz instrukcje do promptu. Te trzy elementy spinasz z `createBashTool` i podajesz agentowi:
 
 ```ts
-import {
-  experimental_createSkillTool as createSkillTool,
-  createBashTool,
-} from 'bash-tool';
+import { experimental_createSkillTool as createSkillTool, createBashTool } from 'bash-tool';
 import { ToolLoopAgent } from 'ai';
 
 // Folder ze skillami → narzędzie + pliki do sandboxa + instrukcje
 const { skill, files, instructions } = await createSkillTool({
-  skillsDirectory: './skills',
+	skillsDirectory: './skills'
 });
 
 const { tools } = await createBashTool({ files, extraInstructions: instructions });
 
 const agent = new ToolLoopAgent({
-  model,
-  tools: { skill, ...tools },
+	model,
+	tools: { skill, ...tools }
 });
-
 ```
 
 Zwróć uwagę na różnicę względem ścieżki 2 z głównej części lekcji. Tam wyciągaliśmy ze skilla _same kryteria_ \- czystą prozę z jednego pliku - i wstrzykiwaliśmy je przez własne narzędzie. Tu ładujesz _cały skill jako folder_: model dostaje jego pliki w sandboxie i sięga po nie powłoką, dokładnie tak, jak robi to harness Claude'a, z progresywnym ujawnianiem - najpierw widzi metadane skilla, a po treść sięga dopiero, gdy go wybierze. To bliższe odwzorowanie oryginalnej mechaniki skilli, ale za cenę dorzucenia do agenta sandboxa z bashem.

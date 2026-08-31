@@ -1,10 +1,10 @@
 ---
-title: "Skalowanie kontekstu dla AI w dużych projektach"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Skalowanie kontekstu dla AI w dużych projektach'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m4-l1/assets/cover.png)
@@ -64,7 +64,7 @@ Po modułach 1-3 wiesz już, że każdy z tych elementów odgrywa ważną rolę 
 
 Punktem wyjścia jest jedna zmiana myślenia: **root `AGENTS.md` to spis treści, a nie encyklopedia.** Trzyma to, co dotyczy całego projektu i jest stale potrzebne (konwencje, najważniejsze komendy, wskaźniki do reszty), a nie całą wiedzę o projekcie.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-1-10x.png)
 
 Reszta, czyli PRD, plany, research i decyzje, ląduje w osobnej warstwie: katalogu `context/`, który pełni rolę **systemu zapisu** (system-of-record).
 
@@ -72,7 +72,7 @@ Agent sięga tam _just-in-time_: czasem sam, gdy wymaga tego zadanie, a części
 
 Taki jest podział ról: agent wykonuje, a my odpowiadamy za to, żeby dostał kontekst potrzebny do bieżącego zadania. Mechanizmy pomocnicze, jak automatyczne aktywowanie skilli czy doczytywanie plików, tylko częściowo nas w tym wyręczają.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-2-10x.png)
 
 ### Od czego zacząć?
 
@@ -111,7 +111,7 @@ Szczeble wyglądają mniej więcej tak:
 1. **root `AGENTS.md` \+ folder `context/`** \- punkt startowy każdego projektu,
 2. **`AGENTS.md` per moduł + indeks tych plików w głównym `AGENTS.md`** \- gdy któryś moduł jest złożony i ma własne, specyficzne wzorce i konwencje: kluczowe dla agenta pracującego w jego obszarze, a nieistotne dla pozostałych modułów. Drugi powód to moduł utrzymywany przez dedykowany zespół, niezależny od reszty monorepozytorium,
 3. **własny `context/` w module** \- gdy moduł wymaga dedykowanego PRD, roadmapy i innych artefaktów, bo prowadzi go osobny zespół albo praca nad nim jest na tyle intensywna, że główny `context/` przestaje wystarczać.
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-3-10x.png) 
+   ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-3-10x.png)
 
 Najważniejsze nie są jednak szczeble, tylko **sygnały**, które uzasadniają wejście wyżej:
 
@@ -202,7 +202,7 @@ Nie zakładaj `context/` w każdym module „na wszelki wypadek". To ta sama prz
 
 Reguła decyzyjna jest ta sama: **dziel według granicy własności, z uwzględnieniem złożoności i realnych potrzeb, a nie na podstawie liczby folderów.**
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-4-10x.png)
 
 ### Żeby reguły modułu naprawdę zadziałały
 
@@ -216,7 +216,7 @@ Gdy startujesz agenta z wnętrza modułu, zawsze ładuje się jego plik z reguł
 
 Wniosek jest prosty. Jeśli reguły modułu są krytyczne i muszą zadziałać, masz dwie możliwości: odpal agenta z wnętrza modułu albo przekaż jawnie referencję do pliku, jeżeli pracujesz z roota.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-5-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-5-10x.png)
 
 Drugie miejsce to **utrzymanie**. Gdy moduł dostaje własne pliki, bierzesz na siebie ich pielęgnację, bo inaczej za pół roku zaczną szkodzić nieaktualnymi instrukcjami.
 
@@ -266,7 +266,7 @@ Zanim wejdziemy w szczegóły, popatrzmy na cały moduł z lotu ptaka. Każda le
 
 Naturalnie najwięcej wyciągniesz, pracując na jednym repo od początku do końca — wtedy artefakty łańcuchują się jeden w drugi. Ale jeśli wolisz ćwiczyć każdą technikę na innym kodzie, certyfikat 10xArchitect wymaga tylko tego, żeby cała czwórka istniała i była _twoja_ — taka, którą potrafisz obronić.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-6-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-6-10x.png)
 
 W całym tym module AI jest twoim analitykiem, nie decydentem. Skille i agent przyspieszą zbieranie kontekstu, narysują mapę i podsuną kandydatów do refaktoru, ale decyzje architektoniczne i tak należą do ciebie. Raport, który złożysz na odznakę Architekta, ma być _twój_, czyli taki, który potrafisz obronić, a nie taki, który wygenerowałeś jednym promptem i przyjąłeś na wiarę.
 
@@ -358,7 +358,7 @@ Narzędzia typu [Repomix](https://github.com/yamadashy/repomix), które pakują 
 
 Te trzy warstwy układają się jedna na drugiej: każda rozwiązuje inny problem i żadna nie zastępuje pozostałych.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-7-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l1-lesson-draft-7-10x.png)
 
 Ze względu na ten dodatkowy narzut złożoności i infrastruktury zachęcamy do unikania przedwczesnego rozbijania monolitów na mikroserwisy. Ta rada była powtarzana jeszcze przed czasami AI, a praca z agentami daje nam kolejne powody, żeby podchodzić do tej decyzji z dużą ostrożnością.
 

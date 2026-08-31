@@ -1,10 +1,10 @@
 ---
-title: "Od planu do testów: implementacja unitów z Agentem"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Od planu do testów: implementacja unitów z Agentem'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m3-l2/assets/cover.jpg)
@@ -24,11 +24,10 @@ Dlaczego tak się dzieje? Bo najtrudniejsza część testu to nie wygenerowanie 
 W m3-l1 zobaczyłeś go na funkcji liczącej rabat, gdzie agent brał oczekiwany wynik wprost z implementacji. Teraz ta sama pułapka na realnej funkcji - takiej z aplikacji do fiszek, która wylicza odstęp do kolejnej powtórki karty:
 
 ```ts
-  // grade: 0 = nie pamiętam, 1 = słabo, 2 = dobrze
+// grade: 0 = nie pamiętam, 1 = słabo, 2 = dobrze
 function getNextInterval(prevInterval: number, grade: number): number {
-  return prevInterval * grade;
+	return prevInterval * grade;
 }
-
 ```
 
 Na pierwszy rzut oka widać jedno: wynik to `prevInterval * grade`. Model napisze więc asercję wprost na tym wzorze - `getNextInterval(10, 2)` ma zwrócić `20`. Test przejdzie na zielono.
@@ -58,12 +57,11 @@ Problem polega na tym, że takie testy często sprawdzają kształt aktualnej im
 Zobacz uproszczony przykład:
 
 ```ts
-it("authenticates user", async () => {
-  const result = await authenticate(input);
+it('authenticates user', async () => {
+	const result = await authenticate(input);
 
-  expect(result).toEqual(await authenticate(input));
+	expect(result).toEqual(await authenticate(input));
 });
-
 ```
 
 To wygląda jak test, ale nie chroni prawie niczego. Asercja pyta funkcję, co zwróciła, a potem sprawdza, czy zwróciła to, co zwróciła.
@@ -182,7 +180,7 @@ RED -> GREEN -> REFACTOR
 
 Najpierw agent pisze test, który musi spaść na czerwono. Potem dopisuje minimalny kod, który go zazielenia. Na końcu porządkuje rozwiązanie, ale bez zmiany zachowania (zwróć uwagę, że ta praktyka nie wymaga test-planu i możesz ją stosować do wdrażania testów na bieżąco).
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l2-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l2-lesson-draft-1-10x.png)
 
 W klasycznym TDD to znany cykl. W pracy z agentem ma jeszcze jedną funkcję: zatrzymuje model na asercji, zanim zacznie produkować implementację.
 
@@ -354,7 +352,7 @@ Narzędzia do testów mutacji działają według podobnego schematu - niezależn
 2. **Uruchamiają testy dla każdego mutanta** (w praktyce tylko te, które dotykają zmienionej linii - wrócimy do tego przy wydajności).
 3. **Klasyfikują wynik.** Jeśli przy danym mutancie choć jeden test failuje - mutant został _zabity_ (killed), czyli testy wykryły wadę. Jeśli wszystkie testy nadal przechodzą - mutant _przeżył_ (survived), czyli masz konkretny dowód, że żadna asercja nie pilnuje tego fragmentu.
 4. **Liczą wskaźnik mutacji** \- szczegóły wskaźnika pokazującego stan testów poniżej.
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l2-lesson-draft-2-10x.png) 
+   ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l2-lesson-draft-2-10x.png)
 
 Stany mutantów, które możesz zobaczyć w raportach:
 
@@ -397,19 +395,14 @@ Kreator dopisze zależności do `package.json` (m.in. `@stryker-mutator/core` i 
 
 ```json
 {
-  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
-  "testRunner": "vitest",
-  "plugins": ["@stryker-mutator/vitest-runner"],
-  "mutate": [
-    "src/**/*.ts",
-    "!src/**/*.spec.ts",
-    "!src/**/*.test.ts"
-  ],
-  "reporters": ["progress", "clear-text", "html"],
-  "concurrency": 4,
-  "thresholds": { "high": 80, "low": 60, "break": null }
+	"$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+	"testRunner": "vitest",
+	"plugins": ["@stryker-mutator/vitest-runner"],
+	"mutate": ["src/**/*.ts", "!src/**/*.spec.ts", "!src/**/*.test.ts"],
+	"reporters": ["progress", "clear-text", "html"],
+	"concurrency": 4,
+	"thresholds": { "high": 80, "low": 60, "break": null }
 }
-
 ```
 
 Co tu jest istotne:

@@ -1,10 +1,10 @@
 ---
-title: "Roadmapa MVP: milestony, zależności i priorytety"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Roadmapa MVP: milestony, zależności i priorytety'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m2-l1/assets/cover.jpg)
@@ -35,7 +35,7 @@ W tradycyjnym układzie zespołu to zadanie należało do kogoś innego. Program
 
 Praca z agentem zmienia ten układ. Agent przyspiesza pisanie kodu, ale jednocześnie pozwala dużo szybciej wyprodukować pozorny postęp - jeżeli sekwencja pracy jest zła, dostajesz rosnącą aplikację, w której nie widać, czy najważniejszy scenariusz dla odbiorcy tego projektu w ogóle działa.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l1-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l1-lesson-draft-1-10x.png)
 
 Tutaj mogą pomóc kompetencje TPMa, bo realnie wpływają one na efektywną obsługę agentów. I w żadnym wypadku nie chodzi nam o organizowanie spotkań czy statusów.
 
@@ -56,7 +56,7 @@ Będąc świadomym tego, jak ważne jest szersze spojrzenie na realizowane zadan
 
 Punktem wyjścia będą znane ci artefakty. Zakończymy na roadmapie jako mapie kolejnych zadań do zrealizowania w tym tygodniu.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l1-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l1-lesson-draft-2-10x.png)
 
 Co który plik opisuje:
 
@@ -94,7 +94,7 @@ Z agentem AI domyślnie chcemy iść inaczej. Dlaczego?
 
 Dla 10xCards (PRD z preworku [\[4.2\]](https://platforma.przeprogramowani.pl/courses/10xdevs-3-prework/pl/15)) zła i dobra dekompozycja wyglądają tak:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l1-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l1-lesson-draft-3-10x.png)
 
 Podejście `vertical-first` zaczyna od `north star slice'a` \- najmniejszego działającego przepływu, który udowadnia tezę produktu. W 10xCards może to być np. S-01 "First gated generation loop": wklejasz tekst, dostajesz wygenerowane karty, akceptujesz lub odrzucasz każdą z osobna, zaakceptowane lądują w decku. Produkt realnie zaczyna obsługiwać fiszki.
 
@@ -207,7 +207,6 @@ Każdy slice w `## Slices` ma ten sam zestaw pól. Wypełnione dla 10xCards S-01
   nothing downstream matters. Sequenced first because everything else is
   read/edit on top of cards this loop produces.
 - **Status:** blocked
-
 ```
 
 Status `blocked` zapala się automatycznie, kiedy choć jeden Unknown ma `Block: yes`. Dopóki nie rozstrzygniesz pytania o OpenRouter privacy, slice nie jest gotowy do implementacji. To dobra wiadomość - skill mówi ci wprost, czego nie wiesz, _zanim_ wpadniesz w to w trakcie kodowania.
@@ -297,7 +296,7 @@ Cały schemat pracy może się opierać na trzech rodzajach akcji i zapytań:
 - **Read** \- "pokaż mi otwarte zadania w projekcie 10xCards z labelem `ready`", "pokaż mi acceptance criteria dla TEN-14".
 - **Create** \- "stwórz issue 'First gated generation loop' z kryteriami akceptacji, zależnościami i labelem `north-star`".
 - **Update** \- "zmień status TEN-14 na `in-progress`", "dołóż komentarz z linkiem do PR-a".
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l1-lesson-draft-4-10x.png) 
+  ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l1-lesson-draft-4-10x.png)
 
 W naszej lekcji zobaczymy jak łatwo wykorzystać potencjał wspominanego już Github CLI oraz premierowe MCP Lineara:
 

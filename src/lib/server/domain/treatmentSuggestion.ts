@@ -67,12 +67,14 @@ export function suggestTreatments(
 		return toDate(b.occurredAt).getTime() - toDate(a.occurredAt).getTime();
 	});
 
-	return matches.map(({ treatmentId, treatmentName, outcome, healthEventId, symptom, occurredAt }) => ({
-		treatmentId,
-		treatmentName,
-		outcome,
-		healthEventId,
-		symptom,
-		occurredAt
-	}));
+	return matches.map(
+		({ treatmentId, treatmentName, outcome, healthEventId, symptom, occurredAt }) => ({
+			treatmentId,
+			treatmentName,
+			outcome,
+			healthEventId,
+			symptom,
+			occurredAt
+		})
+	);
 }

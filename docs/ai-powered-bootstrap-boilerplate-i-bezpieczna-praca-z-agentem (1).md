@@ -1,10 +1,10 @@
 ---
-title: "AI-Powered Bootstrap: boilerplate i bezpieczna praca z Agentem"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'AI-Powered Bootstrap: boilerplate i bezpieczna praca z Agentem'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 W lekcji Od chatbota do Agenta (M1L2) na dysku wylądował **tech-stack.md**. Razem z **prd.md** masz teraz dwa artefakty: kontrakt biznesowy i kontrakt techniczny.
@@ -23,7 +23,7 @@ Są alternatywne sposoby, i między innymi to właśnie adresujemy w tej lekcji.
 
 Łańcuch **/10x-shape → /10x-prd → /10x-tech-stack-selector → /10x-bootstrapper** operuje na plikach kontekstowych w folderze `/context`. Każde ogniwo czyta pliki i zapisuje nowe artefakty na dysku.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-1-10x.png)
 
 W tej lekcji ten przepływ zostaje domknięty: **tech-stack.md** zostanie wykorzystany przez **/10x-bootstrapper**, a na wyjściu stworzy szkielet projektu i raport **verification.md**.
 
@@ -79,7 +79,8 @@ Zachowanie modelu, które znasz z preworku (pewność siebie mimo niepełnej wie
 
 Bootstrapper to konkretny skill, ale wzorzec w nim stosowany jest uniwersalny. Każda egzekucja agenta - bootstrap, health-check, refaktor, generacja migracji - przechodzi przez trzy bramki:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-2-10x.png)
+
 1. **Pre-execution.** Zanim agent zrobi cokolwiek na dysku albo w sieci, sprawdza, czy ma do tego mandat. W bootstrapperze to weryfikacja hand-offu (**tech-stack.md** na dysku) i _recency check_: czy starter nie jest porzucony.
 2. **In-execution.** W trakcie wykonania interakcja przebiega między agentem a _harnessem_, czyli narzędziem, w którym agent działa (Claude Code, Cursor, Codex). Harness pyta cię o pozwolenie albo wykonuje komendę bez pytania, w zależności od polityki.
 3. **Post-execution.** Skill audytuje wynik i zapisuje raport. W bootstrapperze to **npm audit** plus **verification.md** z statusem każdej fazy.
@@ -126,7 +127,7 @@ Jak to rozstrzygnąć? Filtr przy każdym prompcie: **co ten wzorzec może popsu
 
 Reguły w Claude Code są ewaluowane w kolejności **deny → ask → allow**. Pierwsza pasująca wygrywa. \*_Bash(git push )_ na denyliście ma priorytet nad \*_Bash(git add )_ na allowliście, niezależnie od kolejności wpisów.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-3-10x.png)
 
 Wbudowane narzędzia harnessu (**Read**, **Edit**, **Write**) i komendy bash to _różne światy_. Reguła **Read(./.env)** w **deny** zablokuje odczyt **.env** z poziomu agenta, ale nie zatrzyma **cat .env** w bashu, bo to inna ścieżka egzekucji.
 
@@ -147,35 +148,27 @@ Zamiast uczyć się polityki na sucho, zacznij od konkretnego pliku. Po pierwszy
 
 ```json
 {
-  "permissions": {
-    "allow": [
-      "Bash(npm *)",
-      "Bash(npx *)",
-      "Bash(node *)",
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(git diff *)",
-      "Bash(git log *)",
-      "Bash(git status *)",
-      "Bash(git branch *)",
-      "Bash(git checkout *)",
-      "Bash(git stash *)",
-      "Read",
-      "Edit",
-      "Write"
-    ],
-    "ask": [
-      "Bash(curl *)",
-      "Bash(wget *)",
-      "Bash(git push *)",
-      "Bash(git push)"
-    ],
-    "deny": [
-      "Bash(rm -rf *)",
-    ]
-  }
+	"permissions": {
+		"allow": [
+			"Bash(npm *)",
+			"Bash(npx *)",
+			"Bash(node *)",
+			"Bash(git add *)",
+			"Bash(git commit *)",
+			"Bash(git diff *)",
+			"Bash(git log *)",
+			"Bash(git status *)",
+			"Bash(git branch *)",
+			"Bash(git checkout *)",
+			"Bash(git stash *)",
+			"Read",
+			"Edit",
+			"Write"
+		],
+		"ask": ["Bash(curl *)", "Bash(wget *)", "Bash(git push *)", "Bash(git push)"],
+		"deny": ["Bash(rm -rf *)"]
+	}
 }
-
 ```
 
 Dlaczego akurat te reguły?
@@ -249,7 +242,7 @@ W innym scenariuszu model zaproponował: _the bubblewrap sandbox is failing... l
 
 To pojedyncze, udokumentowane przypadki, nie codzienność. Wystarczą jednak, żeby skorygować model mentalny: polityka uprawnień to nie zamek w drzwiach. To próg na podłodze - spowolni i zaalarmuje, ale nie zatrzyma za każdym razem.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-4-10x.png)
 
 Stąd zalecenie kursowe na tę lekcję: **polityka jako punkt wyjścia, YOLO jako świadoma decyzja z warunkami brzegowymi, defense in depth jako zasada**. Trzymaj się tych trzech, póki nie masz jeszcze instynktu, kiedy bezpiecznie któryś z nich poluzować.
 
@@ -277,7 +270,8 @@ Masz istniejący projekt? Nie uruchamiaj bootstrappera, który został zaprojekt
 
 W przypadku brownfieldu **/10x-health-check** to właściwy punkt wejścia. Bierze istniejący projekt i przepuszcza go przez te same analogiczne bramki analityczne:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-5-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-5-10x.png)
+
 1. **Pre-check** — audyt zależności (**npm audit**, **pip-audit**, **cargo audit**, zależnie od ekosystemu), obecność lockfile'a, znane podatności. Zanim agent zacznie z projektem pracować, sprawdza, w jakim stanie jest fundament.
 2. **In-check** — analiza read-only. Czy jest test runner i czy testy się uruchamiają? Czy jest pipeline CI/CD? Czy brakuje konfiguracji (**tsconfig.json** ze strict, **.prettierrc**, **.editorconfig**)?
 3. **Post-check** — werdykt agent-readiness: **healthy**, **needs-attention** lub **critical-issues**. Plus priorytetyzowana lista fixów w dwóch kategoriach: fixy do zrobienia teraz (Category A: brakujący test runner, krytyczne podatności, brak lockfile'a) i fixy omawiane w kolejnych lekcjach (Category B: brak CI/CD to temat lekcji Sprint Zero (M1L5), brak AGENTS.md to temat lekcji Agent Onboarding (M1L4)).
@@ -290,7 +284,7 @@ Dwa raporty razem dają spójny obraz: gdzie stack ma luki _i_ gdzie infrastrukt
 
 Wynik: **context/foundation/health-check.md**, plik z raportem, który pełni tę samą rolę co **verification.md** w greenfield: daje następnym ogniwom łańcucha plikowy kontekst o stanie projektu przed onboardingiem agenta (M1L4).
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-6-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-6-10x.png)
 
 Obie ścieżki zbiegają się w lekcji Agent Onboarding (M1L4) z równoważnym kontekstem.
 
@@ -410,7 +404,7 @@ Wzorzec "deleguj do autorytatywnego CLI" działa, dopóki działa samo CLI. A ki
 
 Bootstrapper traktuje to jako **HARD-STOP**. Jeśli **npm create astro@latest** zwróci niezerowy exit code, skill się zatrzymuje. Nie próbuje naprawiać sytuacji od strony agenta, nie improwizuje brakujących plików, nie kontynuuje do **npm audit**.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-8-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-8-10x.png)
 
 Co zostaje na dysku?
 
@@ -426,7 +420,7 @@ Wzorzec do zapamiętania: **kiedy autorytatywne CLI mówi nie, agent też mówi 
 
 Załóżmy, że w katalogu masz już **package.json**, zostawiony po wcześniejszej eksploracji albo ręcznie napisanej wersji projektu. **npm create astro@latest** chce zapisać swój **package.json**. Co się dzieje?
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-9-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l3-lesson-draft-9-10x.png)
 
 Bootstrapper nie nadpisuje. Twój **package.json** zostaje, wersja ze scaffoldu trafia do **package.json.scaffold** jako _sibling_. Porównujesz oba i podejmujesz decyzję: zachować swoje, przyjąć scaffold, zmergować ręcznie.
 

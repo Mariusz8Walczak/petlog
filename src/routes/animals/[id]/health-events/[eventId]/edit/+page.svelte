@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -14,15 +15,30 @@
 <form method="POST" use:enhance class="flex max-w-md flex-col gap-3">
 	<label class="flex flex-col gap-1 text-sm">
 		Data
-		<input type="date" name="occurredAt" required value={data.event.occurredAt} class="rounded border border-gray-300 px-3 py-2" />
+		<input
+			type="date"
+			name="occurredAt"
+			required
+			value={data.event.occurredAt}
+			class="rounded border border-gray-300 px-3 py-2"
+		/>
 	</label>
 	<label class="flex flex-col gap-1 text-sm">
 		Objaw
-		<input name="symptom" required value={data.event.symptom} class="rounded border border-gray-300 px-3 py-2" />
+		<input
+			name="symptom"
+			required
+			value={data.event.symptom}
+			class="rounded border border-gray-300 px-3 py-2"
+		/>
 	</label>
 	<label class="flex flex-col gap-1 text-sm">
 		Diagnoza (opcjonalnie)
-		<input name="diagnosis" value={data.event.diagnosis ?? ''} class="rounded border border-gray-300 px-3 py-2" />
+		<input
+			name="diagnosis"
+			value={data.event.diagnosis ?? ''}
+			class="rounded border border-gray-300 px-3 py-2"
+		/>
 	</label>
 	<label class="flex flex-col gap-1 text-sm">
 		Status
@@ -34,7 +50,9 @@
 	</label>
 	<label class="flex flex-col gap-1 text-sm">
 		Notatki
-		<textarea name="notes" class="rounded border border-gray-300 px-3 py-2">{data.event.notes ?? ''}</textarea>
+		<textarea name="notes" class="rounded border border-gray-300 px-3 py-2"
+			>{data.event.notes ?? ''}</textarea
+		>
 	</label>
 
 	{#if form?.error}
@@ -42,8 +60,16 @@
 	{/if}
 
 	<div class="flex gap-3">
-		<button type="submit" class="rounded bg-gray-900 px-3 py-2 text-white hover:bg-gray-700">Zapisz</button>
-		<a href="/animals/{data.animal.id}/health-events/{data.event.id}" class="rounded border border-gray-300 px-3 py-2">
+		<button type="submit" class="rounded bg-gray-900 px-3 py-2 text-white hover:bg-gray-700"
+			>Zapisz</button
+		>
+		<a
+			href={resolve('/animals/[id]/health-events/[eventId]', {
+				id: data.animal.id,
+				eventId: data.event.id
+			})}
+			class="rounded border border-gray-300 px-3 py-2"
+		>
 			Anuluj
 		</a>
 	</div>

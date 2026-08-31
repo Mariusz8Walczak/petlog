@@ -4,7 +4,9 @@ import { computeWeightTrend } from './weightTrend';
 describe('computeWeightTrend', () => {
 	it('returns insufficient_data with fewer than 2 entries', () => {
 		expect(computeWeightTrend([]).status).toBe('insufficient_data');
-		expect(computeWeightTrend([{ measuredAt: '2026-01-01', weightKg: 4 }]).status).toBe('insufficient_data');
+		expect(computeWeightTrend([{ measuredAt: '2026-01-01', weightKg: 4 }]).status).toBe(
+			'insufficient_data'
+		);
 	});
 
 	it('flags alert on a >10% drop over ~30 days', () => {

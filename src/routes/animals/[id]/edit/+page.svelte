@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -19,7 +20,12 @@
 <form method="POST" use:enhance class="flex max-w-md flex-col gap-3">
 	<label class="flex flex-col gap-1 text-sm">
 		Imię
-		<input name="name" required value={data.animal.name} class="rounded border border-gray-300 px-3 py-2" />
+		<input
+			name="name"
+			required
+			value={data.animal.name}
+			class="rounded border border-gray-300 px-3 py-2"
+		/>
 	</label>
 	<label class="flex flex-col gap-1 text-sm">
 		Gatunek
@@ -31,11 +37,20 @@
 	</label>
 	<label class="flex flex-col gap-1 text-sm">
 		Rasa (opcjonalnie)
-		<input name="breed" value={data.animal.breed ?? ''} class="rounded border border-gray-300 px-3 py-2" />
+		<input
+			name="breed"
+			value={data.animal.breed ?? ''}
+			class="rounded border border-gray-300 px-3 py-2"
+		/>
 	</label>
 	<label class="flex flex-col gap-1 text-sm">
 		Data urodzenia (opcjonalnie)
-		<input type="date" name="birthDate" value={data.animal.birthDate ?? ''} class="rounded border border-gray-300 px-3 py-2" />
+		<input
+			type="date"
+			name="birthDate"
+			value={data.animal.birthDate ?? ''}
+			class="rounded border border-gray-300 px-3 py-2"
+		/>
 	</label>
 
 	{#if form?.error}
@@ -43,7 +58,12 @@
 	{/if}
 
 	<div class="flex gap-3">
-		<button type="submit" class="rounded bg-gray-900 px-3 py-2 text-white hover:bg-gray-700">Zapisz</button>
-		<a href="/animals/{data.animal.id}" class="rounded border border-gray-300 px-3 py-2">Anuluj</a>
+		<button type="submit" class="rounded bg-gray-900 px-3 py-2 text-white hover:bg-gray-700"
+			>Zapisz</button
+		>
+		<a
+			href={resolve('/animals/[id]', { id: data.animal.id })}
+			class="rounded border border-gray-300 px-3 py-2">Anuluj</a
+		>
 	</div>
 </form>

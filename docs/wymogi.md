@@ -1,26 +1,18 @@
 Choć do projektu zaliczeniowego jeszcze trochę czasu, pierwsze pytania już się pojawiają, dlatego zbieramy wszystkie informacje w jednym miejscu. Zapoznaj się z postem, a jeśli coś nadal będzie niejasne, śmiało pytaj 😊
 
-
-
 📅 Terminy certyfikacji
 
-1. termin: 5 lipca 2026  
-2. termin: 10 sierpnia 2026  
+1. termin: 5 lipca 2026 
+2. termin: 10 sierpnia 2026 
 3. termin (ostateczny): 14 września 2026
 
 Każdy termin to wskazany dzień do 23:59. Po każdym terminie prowadzący mają dwa tygodnie na sprawdzenie i feedback.
-
-
 
 Jak działa feedback? Jeśli w ciągu tych dwóch tygodni nie otrzymasz żadnego sygnału — wszystko jest ok, a certyfikat pojawi się na koniec tego okresu. Jeśli coś będzie wymagało poprawy, odezwiemy się z konkretnym komentarzem. Zasada prosta: cisza = dobrze.
 
 Wyróżnienia przyznajemy tylko w przypadku pierwszego terminu. Projekty wyróżnione w pierwszym terminie mają szansę trafić na Demo Day tj. webinar prezentujący najlepsze projekty z edycji.
 
-
-
 Ważne: Po ukończeniu kursu warto regularnie sprawdzać wiadomości na platformie — zaproszenia na Demo Day wysyłamy indywidualnie i w poprzednich edycjach kilku uczestników niestety przegapiło tę szansę.
-
-
 
 🏅 Certyfikat — 3 filary wykorzystania AI
 
@@ -34,10 +26,6 @@ W edycji 3.0 wprowadzamy nowy model certyfikacji oparty o 3 składowe:
 
 W formularzu zgłoszeniowym znajdziesz osobną przestrzeń na oddanie części obowiązkowej (10xBuilder) oraz na dokumentację każdego z bloków dodatkowych. W momencie, kiedy zbliża się termin certyfikacji, wysyłasz formularz jeden raz z takim zakresem zadań, jaki udało ci się zrealizować:
 
-
-
-
-
 np. tylko Builder, Builder + Architekt lub Builder + Architekt + Champion
 
 Bardzo prosimy o przemyślane zgłoszenia - Builder w lipcu, Architekt w sierpniu i Champion we wrześniu nie przejdą - wtedy bierzemy twoje pierwsze zgłoszenie.
@@ -46,73 +34,37 @@ Dodatek “Wyróżnienie” zyskujesz wysyłając wybrany zakres w 1. terminie, 
 
 Formularz udostępnimy w ostatnim tygodniu trwania programu.
 
-
-
 ✅ Wymagania obowiązkowe
 
 ❗ Projekt do odznaki 10xBuilder musi zawierać:
 
-
-
-
-
 Mechanizm kontroli dostępu odpowiedni dla typu aplikacji (np. ekran logowania)
-
-
 
 Zarządzanie danymi — tworzenie, odczytywanie, aktualizacja i usuwanie elementów (CRUD) w sposób sensowny dla domeny aplikacji
 
-
-
 Logika biznesowa (z AI lub bez - OpenRouter to tylko jedna z opcji na integrację)
 
-
-
 Dokumenty kontekstowe (np. prd.md, infrastructure.md, roadmap.md)
-
-
 
 Testy — co najmniej jeden test weryfikujący działanie z perspektywy użytkownika
 
 ⭐ Opcjonalnie (mile widziane):
 
-
-
-
-
 Projekt dostępny pod publicznym URL, w App Store lub jako instalowalny pakiet (jeśli typ aplikacji na to nie pozwala, pomiń to w opisie projektu)
-
-
 
 🥇 Kryteria na wyróżnienie
 
 Zgłoszenie w 1. terminie (5.07.2026):
 
-
-
-
-
 Własna wersja 10xCards — spełnienie wszystkich wymagań (obowiązkowe + publiczny URL)
-
-
 
 Customowy projekt — spełnienie wszystkich wymagań obowiązkowych (ale bez publicznego URL - np. projekty wewnętrzne, korporacyjne, etc.)
 
-
-
 🛠 Wymogi techniczne
-
-
-
-
 
 Stack: dowolny — nie musi być JavaScript/webowy. Może być aplikacja webowa, desktopowa, mobilna lub embedded
 
-
-
 Kluczowe: zastosowanie AI w procesie wytwarzania, nie złożoność aplikacji
-
-
 
 Repo publiczne: nie jest wymagane, ale mile widziane. Repo prywatne jest ok — dodaj wtedy @przeprogramowani / @psmyrdek / @mkczarkowski jako collaboratora. Alternatywnie możesz dostarczyć screenshoty pokazujące strukturę projektu (pliki kontekstowe, testy, CI/CD)
 
@@ -128,8 +80,6 @@ Ocena zgłoszeń
 
 Weryfikacja przebiega z udziałem człowieka wspomaganego AI — nie jest to żaden automat. Zależy nam na tym, żeby ocenić rzeczywisty wysiłek i zrozumienie materiału, nie tylko spełnienie checklisty.
 
-
-
 💡 Jaki projekt wybrać? Dobry projekt jest mniejszy, niż myślisz
 
 Zanim zaczniesz kodować, warto zadać sobie kilka pytań. Najważniejsze słowo w kontekście projektu kursowego to MVP — najmniejsza wersja produktu, która nadal daje użytkownikowi konkretną wartość.
@@ -140,68 +90,34 @@ Najlepiej przyjmowane projekty na poprzednich Demo Days łączyło jedno — by�
 
 Czego unikać?
 
-
-
-
-
 Za duże MVP — "aplikacja do zarządzania finansami" po chwili ma już import z banku, skanowanie paragonów, wykresy, budżety, alerty i coacha AI. Każda funkcja osobno sensowna, razem — projekt startupowy, nie kursowy
 
-
-
 Pusty CRUD — lista zadań czy lista książek to dobry fundament, ale sama lista nie wystarczy. Dodaj regułę: rekomendację, priorytetyzację, walidację, scoring
-
-
 
 Wysoki próg zero-to-one — tydzień pracy, a nadal nie da się wykonać jednej sensownej akcji w aplikacji
 
 Użyj tej tabeli do pierwszej oceny swojego pomysłu:
 
-
-
 Masz dwa pomysły? Wybierz ten, który ma krótszą drogę do pierwszego przepływu i bardziej oczywistą logikę biznesową. Efektowność pojawia się później.
-
-
 
 Warto wiedzieć
 
-
-
-
-
 Przygotowania techniczne startują w module 1, a właściwą pracę nad projektem rozpoczynamy od modułu 2 — tam prezentujemy workflow implementacji funkcjonalności
-
-
 
 Nie stresuj się tempem — masz trzy terminy na zaliczenie
 
-
-
 Jakość artefaktów projektowych (PRD, specyfikacje) = klucz do sukcesu z AI
-
-
 
 Nie weryfikujemy stopnia wykorzystania AI — projekt robisz dla siebie
 
-
-
 Nie oceniamy złożoności aplikacji — liczy się zrealizowanie wymogów
-
-
 
 Jeśli masz niestandardowy pomysł na projekt i chcesz się upewnić, że spełnia kryteria — załóż wątek w przestrzeni Dyskusje / Praktyka i oznacz prowadzących lub mentorów
 
 Nasze rekomendacje narzędzi:
 
-
-
-
-
 Ekosystem VS Code → Cursor, potem Windsurf lub alternatywy
 
-
-
 Ekosystem JetBrains → Claude Code w terminalu lub Windsurf/Cline jako plugin
-
-
 
 Niezależnie od IDE → Claude Code lub Codex CLI jako domyślne narzędzie

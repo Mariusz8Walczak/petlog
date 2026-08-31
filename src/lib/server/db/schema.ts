@@ -4,7 +4,9 @@ import { relations } from 'drizzle-orm';
 // --- users & sessions (custom session-based auth, "Lucia pattern") ---
 
 export const users = sqliteTable('users', {
-	id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	email: text('email').notNull().unique(),
 	passwordHash: text('password_hash').notNull(),
 	createdAt: integer('created_at', { mode: 'timestamp_ms' })
@@ -37,7 +39,9 @@ export const SPECIES = ['cat', 'dog', 'rabbit', 'other'] as const;
 export type Species = (typeof SPECIES)[number];
 
 export const animals = sqliteTable('animals', {
-	id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	ownerId: text('owner_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade' }),
@@ -54,7 +58,9 @@ export const animals = sqliteTable('animals', {
 // --- domain: weight logs ---
 
 export const weightLogs = sqliteTable('weight_logs', {
-	id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	animalId: text('animal_id')
 		.notNull()
 		.references(() => animals.id, { onDelete: 'cascade' }),
@@ -73,7 +79,9 @@ export const HEALTH_EVENT_STATUS = ['ongoing', 'resolved'] as const;
 export type HealthEventStatus = (typeof HEALTH_EVENT_STATUS)[number];
 
 export const healthEvents = sqliteTable('health_events', {
-	id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	animalId: text('animal_id')
 		.notNull()
 		.references(() => animals.id, { onDelete: 'cascade' }),
@@ -94,7 +102,9 @@ export const TREATMENT_OUTCOME = ['helped', 'no_effect', 'worsened', 'unknown'] 
 export type TreatmentOutcome = (typeof TREATMENT_OUTCOME)[number];
 
 export const treatments = sqliteTable('treatments', {
-	id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	healthEventId: text('health_event_id')
 		.notNull()
 		.references(() => healthEvents.id, { onDelete: 'cascade' }),

@@ -22,7 +22,12 @@
 		</label>
 		<label class="flex flex-col gap-1 text-sm">
 			Hasło
-			<input type="password" name="password" required class="rounded border border-gray-300 px-3 py-2" />
+			<input
+				type="password"
+				name="password"
+				required
+				class="rounded border border-gray-300 px-3 py-2"
+			/>
 		</label>
 
 		{#if form?.error}

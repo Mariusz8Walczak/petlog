@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -22,7 +23,11 @@
 	<form method="GET" class="flex flex-wrap items-end gap-3">
 		<label class="flex flex-col gap-1 text-sm">
 			Objaw
-			<input name="symptom" value={data.symptomQuery} class="w-64 rounded border border-gray-300 px-3 py-2" />
+			<input
+				name="symptom"
+				value={data.symptomQuery}
+				class="w-64 rounded border border-gray-300 px-3 py-2"
+			/>
 		</label>
 		<button type="submit" class="rounded border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50">
 			Szukaj podobnych
@@ -32,7 +37,9 @@
 	{#if data.symptomQuery}
 		<div class="mt-3" data-testid="similar-cases-panel">
 			{#if data.suggestions.length === 0}
-				<p class="text-sm text-gray-500">Brak wcześniejszych leczeń dla podobnego objawu u tego zwierzęcia.</p>
+				<p class="text-sm text-gray-500">
+					Brak wcześniejszych leczeń dla podobnego objawu u tego zwierzęcia.
+				</p>
 			{:else}
 				<ul class="flex flex-col gap-1 text-sm">
 					{#each data.suggestions as s (s.treatmentId)}
@@ -50,11 +57,21 @@
 <form method="POST" action="?/create" use:enhance class="flex max-w-md flex-col gap-3">
 	<label class="flex flex-col gap-1 text-sm">
 		Data
-		<input type="date" name="occurredAt" required class="rounded border border-gray-300 px-3 py-2" />
+		<input
+			type="date"
+			name="occurredAt"
+			required
+			class="rounded border border-gray-300 px-3 py-2"
+		/>
 	</label>
 	<label class="flex flex-col gap-1 text-sm">
 		Objaw
-		<input name="symptom" required value={data.symptomQuery} class="rounded border border-gray-300 px-3 py-2" />
+		<input
+			name="symptom"
+			required
+			value={data.symptomQuery}
+			class="rounded border border-gray-300 px-3 py-2"
+		/>
 	</label>
 	<label class="flex flex-col gap-1 text-sm">
 		Diagnoza (opcjonalnie)
@@ -78,7 +95,12 @@
 	{/if}
 
 	<div class="flex gap-3">
-		<button type="submit" class="rounded bg-gray-900 px-3 py-2 text-white hover:bg-gray-700">Zapisz</button>
-		<a href="/animals/{data.animal.id}" class="rounded border border-gray-300 px-3 py-2">Anuluj</a>
+		<button type="submit" class="rounded bg-gray-900 px-3 py-2 text-white hover:bg-gray-700"
+			>Zapisz</button
+		>
+		<a
+			href={resolve('/animals/[id]', { id: data.animal.id })}
+			class="rounded border border-gray-300 px-3 py-2">Anuluj</a
+		>
 	</div>
 </form>

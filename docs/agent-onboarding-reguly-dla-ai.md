@@ -1,10 +1,10 @@
 ---
-title: "Agent Onboarding: Reguły dla AI"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Agent Onboarding: Reguły dla AI'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 Przejście przez proces bootstrapowania powinno poskutkować pierwszą wersją projektu możliwego do uruchomienia. Repozytorium zawiera już połączone ze sobą pliki i moduły, mogą się pojawić ogólne akapity dokumentacji, a do tego agent potrafi już określić w jakim stacku będziemy rozwijać kolejne funkcjonalności.
@@ -34,7 +34,7 @@ Każda nowa sesja programowania z agentem zaczyna się od wstępnie wypełnionej
 
 W preworku [\[3.2\]](https://platforma.przeprogramowani.pl/courses/10xdevs-3-prework/pl/10) po raz pierwszy pojawiła się hierarchia instrukcji wczytywana do okna kontekstowego. Teraz wracamy do niej od strony praktycznej. Najpierw ogólna struktura:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l4-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l4-lesson-draft-1-10x.png)
 
 Dobrze wizualizuje to polecenie `/context` w Claude Code - zwróć uwagę, że przy pierwszym uruchomieniu tego polecenia mamy już zajęte 22 tys. tokenów!
 
@@ -60,7 +60,7 @@ Dlatego instrukcje projektowe nie służą tylko temu, żeby nie powtarzać w ka
 
 Da się pracować bez tej warstwy, ale wtedy prompt zadaniowy staje się jednocześnie poleceniem, pamięcią projektu i awaryjnym hamulcem. Szybko robi się z tego rytuał, a przy agentach także źródło kosztownych rozjazdów.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l4-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l4-lesson-draft-2-10x.png)
 
 ### Od /init do pierwszego szkicu
 
@@ -258,7 +258,6 @@ Wpis ma stały format:
 - **Problem**: Agent użył `_.filter()`, mimo że lodash nie jest częścią projektu. To dodałoby niepotrzebną zależność i rozjechało lokalną konwencję pracy z natywnymi API.
 - **Rule**: Nie dodawaj lodash bez jasnego wskazania. Projekt preferuje natywne funkcje JS/TS w standardzie 2026+.
 - **Applies to**: plan, implement, impl-review
-
 ```
 
 Jeśli plik jeszcze nie istnieje, `/10x-lesson` utworzy go z nagłówkiem `# Lessons Learned`. Jeśli istnieje, dopisze nową sekcję na końcu.
@@ -273,7 +272,6 @@ Możesz też umieścić referencję do rejestru w głównych instrukcjach projek
 ## Lessons learned
 
 Zobacz: `context/foundation/lessons.md`
-
 ```
 
 Po kilku tygodniach taki plik staje się konkretną mapą waszego środowiska agentowego: gdzie model zgaduje dobrze, gdzie zgaduje źle i które reguły mają uzasadnienie w realnych powtarzalnych problemach.
@@ -287,7 +285,6 @@ Omówione wcześniej porady zakładają, że trzymamy się jednego wspólnego st
 ```markdown
 This file provides guidance to AI Agents when working with code in this repository:
 @AGENTS.md
-
 ```
 
 Jeśli głównym narzędziem jest Claude Code, ale chcesz, żeby Codex czy Copilot korzystał z tych samych reguł, najprostszy układ wygląda tak:

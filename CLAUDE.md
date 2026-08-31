@@ -29,8 +29,8 @@ Example: adding a `vaccinations` table linked to `animals`.
 
 1. **Schema** — add the table (and any enums) to
    `src/lib/server/db/schema.ts`, following the existing pattern (`text('id')
-   .primaryKey().$defaultFn(() => crypto.randomUUID())`, FK with `onDelete:
-   'cascade'` back to its parent, `createdAt` timestamp default).
+.primaryKey().$defaultFn(() => crypto.randomUUID())`, FK with `onDelete:
+'cascade'` back to its parent, `createdAt` timestamp default).
 2. **Migration** — run `pnpm run db:generate`, review the generated SQL in
    `drizzle/`, then `pnpm run db:migrate` locally.
 3. **Routes** — add `src/routes/animals/[id]/<entity>/...` following the

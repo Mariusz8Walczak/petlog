@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -59,7 +60,9 @@
 		</p>
 	</div>
 	<div class="flex gap-3 text-sm">
-		<a href="/animals/{data.animal.id}/edit" class="hover:underline">Edytuj</a>
+		<a href={resolve('/animals/[id]/edit', { id: data.animal.id })} class="hover:underline"
+			>Edytuj</a
+		>
 		<form method="POST" action="?/deleteAnimal" use:enhance>
 			<button type="submit" class="text-red-600 hover:underline">Usuń zwierzę</button>
 		</form>
@@ -83,16 +86,30 @@
 
 	{#if data.weights.length >= 2}
 		<svg viewBox="0 0 300 60" class="mb-3 h-14 w-full max-w-sm text-gray-400">
-			<polyline points={sparklinePoints(data.weights)} fill="none" stroke="currentColor" stroke-width="2" />
+			<polyline
+				points={sparklinePoints(data.weights)}
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			/>
 		</svg>
 	{/if}
 
 	<ul class="mb-4 flex flex-col gap-1 text-sm" data-testid="weight-list">
 		{#each [...data.weights].reverse() as w (w.id)}
 			<li class="flex items-center justify-between border-b border-gray-100 py-1">
-				<span>{w.measuredAt} — <strong>{w.weightKg} kg</strong> {#if w.note}<span class="text-gray-500">({w.note})</span>{/if}</span>
+				<span
+					>{w.measuredAt} — <strong>{w.weightKg} kg</strong>
+					{#if w.note}<span class="text-gray-500">({w.note})</span>{/if}</span
+				>
 				<span class="flex items-center gap-3">
-					<a href="/animals/{data.animal.id}/weight/{w.id}/edit" class="text-xs hover:underline">Edytuj</a>
+					<a
+						href={resolve('/animals/[id]/weight/[weightId]/edit', {
+							id: data.animal.id,
+							weightId: w.id
+						})}
+						class="text-xs hover:underline">Edytuj</a
+					>
 					<form method="POST" action="?/deleteWeight" use:enhance>
 						<input type="hidden" name="id" value={w.id} />
 						<button type="submit" class="text-xs text-red-600 hover:underline">Usuń</button>
@@ -107,11 +124,22 @@
 	<form method="POST" action="?/addWeight" use:enhance class="flex flex-wrap items-end gap-3">
 		<label class="flex flex-col gap-1 text-sm">
 			Data pomiaru
-			<input type="date" name="measuredAt" required class="rounded border border-gray-300 px-3 py-2" />
+			<input
+				type="date"
+				name="measuredAt"
+				required
+				class="rounded border border-gray-300 px-3 py-2"
+			/>
 		</label>
 		<label class="flex flex-col gap-1 text-sm">
 			Waga (kg)
-			<input type="number" step="0.01" name="weightKg" required class="w-28 rounded border border-gray-300 px-3 py-2" />
+			<input
+				type="number"
+				step="0.01"
+				name="weightKg"
+				required
+				class="w-28 rounded border border-gray-300 px-3 py-2"
+			/>
 		</label>
 		<label class="flex flex-col gap-1 text-sm">
 			Notatka
@@ -129,12 +157,21 @@
 <section class="rounded border border-gray-200 bg-white p-4">
 	<div class="mb-2 flex items-center justify-between">
 		<h2 class="text-lg font-semibold">Zdarzenia zdrowotne</h2>
-		<a href="/animals/{data.animal.id}/health-events/new" class="text-sm hover:underline">+ Dodaj</a>
+		<a
+			href={resolve('/animals/[id]/health-events/new', { id: data.animal.id })}
+			class="text-sm hover:underline">+ Dodaj</a
+		>
 	</div>
 	<ul class="flex flex-col gap-1 text-sm">
 		{#each data.events as ev (ev.id)}
 			<li class="border-b border-gray-100 py-1">
-				<a href="/animals/{data.animal.id}/health-events/{ev.id}" class="hover:underline">
+				<a
+					href={resolve('/animals/[id]/health-events/[eventId]', {
+						id: data.animal.id,
+						eventId: ev.id
+					})}
+					class="hover:underline"
+				>
 					{ev.occurredAt} — {ev.symptom}
 					<span class="text-gray-500">({eventStatusLabel[ev.status]})</span>
 				</a>

@@ -1,10 +1,10 @@
 ---
-title: "Od pomysłu do PRD: Metoda Sokratejska z Agentem"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Od pomysłu do PRD: Metoda Sokratejska z Agentem'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 🎥 **VIDEO**: [Watch here](https://player.vimeo.com/video/1192850361?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479)
@@ -79,7 +79,7 @@ Wynik to **shape-notes.md**: zapis decyzji, które podjąłeś.
 
 Wynik to **prd.md**: kontrakt, na podstawie którego Agent będzie rozumiał co chcemy osiągnąć w tym projekcie.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l1-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l1-lesson-draft-1-10x.png)
 
 Oba skille potrafią też pracować w trybie brownfield. Jeśli uruchomisz **/10x-shape** w katalogu istniejącego projektu (tam, gdzie leży **package.json**, **Cargo.toml** czy inny marker), skill wykryje ten kontekst i zaproponuje przełączenie na sesję brownfield. Zamiast pytać "co budujesz od zera", pyta "co chciałbyś dodać/poprawić w systemie?". Więcej o tym trybie działania w dalszej części lekcji.
 
@@ -125,7 +125,7 @@ Sesja **/10x-shape** wymusza inną drogę.
 
 Agent przejmuje prowadzenie. Przeprowadza cię przez sześć faz w stałej kolejności:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l1-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l1-lesson-draft-2-10x.png)
 
 W fazie **Vision & problem** Agent pyta: co dokładnie chcesz rozwiązać i czemu. W naszym przykładzie to moment, kiedy "aplikacja do fiszek z AI" musi się zmienić w konkretny problem konkretnej osoby.
 

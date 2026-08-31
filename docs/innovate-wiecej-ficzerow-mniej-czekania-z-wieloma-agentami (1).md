@@ -1,10 +1,10 @@
 ---
-title: "Innovate: więcej ficzerów, mniej czekania z wieloma agentami"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Innovate: więcej ficzerów, mniej czekania z wieloma agentami'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m2-l5/assets/cover.jpg)
@@ -71,7 +71,7 @@ Po tych komendach masz trzy foldery:
 - główny folder projektu, w którym czytasz roadmapę i koordynujesz pracę,
 - worktree dla S-05,
 - worktree dla S-06.
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l5-lesson-draft-1-10x.png) 
+  ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l5-lesson-draft-1-10x.png)
 
 To jest moment, w którym preworkowa strategia `Isolate` robi się konkretna. Nie izolujesz tylko rozmowy. Izolujesz katalog, branch, sesję agenta i kontekst zadania.
 

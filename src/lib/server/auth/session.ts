@@ -39,7 +39,8 @@ export async function createSession(token: string, userId: string): Promise<Sess
 	return session;
 }
 
-export type SessionValidationResult = { session: Session; user: User } | { session: null; user: null };
+export type SessionValidationResult =
+	{ session: Session; user: User } | { session: null; user: null };
 
 export async function validateSessionToken(token: string): Promise<SessionValidationResult> {
 	const sessionId = hashToken(token);
@@ -61,7 +62,10 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 
 	if (Date.now() >= session.expiresAt.getTime() - RENEW_THRESHOLD_MS) {
 		session.expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
-		await db.update(sessions).set({ expiresAt: session.expiresAt }).where(eq(sessions.id, session.id));
+		await db
+			.update(sessions)
+			.set({ expiresAt: session.expiresAt })
+			.where(eq(sessions.id, session.id));
 	}
 
 	return { session, user };

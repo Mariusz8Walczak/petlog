@@ -1,10 +1,10 @@
 ---
-title: "Plan testów z AI: quality gates, test-plan i priorytety"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Plan testów z AI: quality gates, test-plan i priorytety'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m3-l1/assets/cover.jpg)
@@ -54,7 +54,7 @@ W programowaniu z AI to szczególnie ważne, bo agent potrafi bardzo szybko wyge
 
 Bramki jakościowe celowo utrudniają bezpośrednią drogę z odpowiedzi agenta na produkcję. To mechanizm opóźniający zły odruch: "działa lokalnie, wygląda dobrze, shipujemy". Chcemy, żeby kod najpierw dostał sygnał z narzędzi, testów i review, a dopiero potem trafił do użytkowników.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l1-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l1-lesson-draft-1-10x.png)
 
 Zwróć uwagę, że `/10x-test-plan` nie jest osobnym silnikiem do testów. To warstwa orkiestracji nad cyklem, który znasz już z modułu drugiego.
 
@@ -88,7 +88,7 @@ Inne podejście? Zacznij od ryzyk i wrażliwych obszarów projektu z punktu widz
 
 Całość pokazuje pełniejszy obraz projektu i to, na co naprawdę warto uważać:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l1-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l1-lesson-draft-2-10x.png)
 
 Historia GITa to jeden z mocniejszych sygnałów - zmiany koncentrują się tam, gdzie projekt nadal żyje. Zanim jednak skill ruszy ze skanem, zaproponuje ci zakres: "wykryłem `packages/api/src`, `packages/course-content/src`, wykluczyłem `dist`, `coverage`, fixtures. Akceptujesz czy dorzucić workspace, który przegapiłem?". Warto się tu zatrzymać. Skan rozciągnięty na lockfile albo snapshoty zatopi prawdziwy sygnał churnem, którego nikt nie pisze ręcznie.
 

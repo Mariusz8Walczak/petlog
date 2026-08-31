@@ -1,10 +1,10 @@
 ---
-title: "Testy E2E: Playwright, MCP i multimodalne scenariusze"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Testy E2E: Playwright, MCP i multimodalne scenariusze'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m3-l4/assets/cover.jpg)
@@ -29,7 +29,7 @@ Drzewo dostępności to ustrukturyzowana mapa całej strony. Każdy element ma s
 
 Dla agenta ta mapa to coś lepszego niż screenshot. Jest deterministyczna, kompaktowa i nie wymaga modelu wizyjnego. Agent dostaje snapshot w formacie YAML z referencjami do elementów, na przykład `e5`, `e15`, `e21`. Potem wydaje komendy: "kliknij `e15`", "wpisz tekst w `e21`". Dostaje nowy snapshot i kontynuuje.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l4-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l4-lesson-draft-1-10x.png)
 
 W tej pętli agent nie zgaduje selektorów CSS i nie próbuje rozpoznać przycisków na screenshocie. Nawiguje po strukturze semantycznej strony, tak jak screen reader.
 
@@ -91,16 +91,15 @@ W konfiguracji Playwright Test Runner ten sam plik wygląda tak:
 ```typescript
 // playwright.config.ts
 export default defineConfig({
-  projects: [
-    { name: 'setup', testMatch: /auth\.setup\.ts/ },
-    {
-      name: 'chromium',
-      use: { storageState: 'playwright/.auth/user.json' },
-      dependencies: ['setup'],
-    },
-  ],
+	projects: [
+		{ name: 'setup', testMatch: /auth\.setup\.ts/ },
+		{
+			name: 'chromium',
+			use: { storageState: 'playwright/.auth/user.json' },
+			dependencies: ['setup']
+		}
+	]
 });
-
 ```
 
 Każdy test startuje od razu w stanie zalogowanym. Plik `auth.json` zawiera wrażliwe dane, więc dodaj go do `.gitignore`.
@@ -167,7 +166,7 @@ W kroku PLAN masz dwie drogi do tego samego kontraktu. Pierwsza, gdy chcesz, by 
 
 Tego przepływu nie składasz ręcznie. `/10x-e2e` prowadzi go za ciebie i wie, że do eksploracji aplikacji może sięgnąć po Playwright CLI z poprzedniej sekcji. Po twojej stronie zostaje jedno: seed test (`seed.spec.ts`), który pokazuje agentowi, jak wygląda poprawny test w twoim projekcie.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l4-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l4-lesson-draft-2-10x.png)
 
 Konkretny przykład z 10xCards: w `test-plan.md` najwyższe ryzyko E2E to "utrata wygenerowanych fiszek po odświeżeniu strony". Ten scenariusz przechodzi przez OpenRouter (mockowany na warstwie HTTP), API zapisu, bazę danych i renderowanie po stronie serwera, więc żaden test jednostkowy tego nie pokryje. Drugie ryzyko, "niezalogowany użytkownik widzi chronione zasoby", to z kolei pełna droga przez bramkę autoryzacji: middleware, przekazanie ciasteczka i przekierowanie. Podajesz te ryzyka skillowi, a on prowadzi resztę: Planner eksploruje aplikację przez snapshoty, generuje plan, Generator zamienia go w test. Brzmi świetnie, ale to dopiero połowa drogi.
 
@@ -192,23 +191,22 @@ Dobry seed test demonstruje agentowi cztery wzorce:
 import { test, expect } from '@playwright/test';
 
 test('created deck persists after page reload', async ({ page }) => {
-  const deckName = `Test Deck ${Date.now()}`;
-  await page.goto('/');
+	const deckName = `Test Deck ${Date.now()}`;
+	await page.goto('/');
 
-  await page.getByRole('button', { name: 'New deck' }).click();
-  await page.getByRole('textbox', { name: 'Deck name' }).fill(deckName);
-  await page.getByRole('button', { name: 'Create' }).click();
+	await page.getByRole('button', { name: 'New deck' }).click();
+	await page.getByRole('textbox', { name: 'Deck name' }).fill(deckName);
+	await page.getByRole('button', { name: 'Create' }).click();
 
-  await expect(page.getByRole('heading', { name: deckName })).toBeVisible();
+	await expect(page.getByRole('heading', { name: deckName })).toBeVisible();
 
-  await page.reload();
-  await expect(page.getByRole('heading', { name: deckName })).toBeVisible();
+	await page.reload();
+	await expect(page.getByRole('heading', { name: deckName })).toBeVisible();
 
-  // Cleanup
-  await page.getByRole('button', { name: 'Delete deck' }).click();
-  await page.getByRole('button', { name: 'Confirm' }).click();
+	// Cleanup
+	await page.getByRole('button', { name: 'Delete deck' }).click();
+	await page.getByRole('button', { name: 'Confirm' }).click();
 });
-
 ```
 
 Zwróć uwagę na `Date.now()` w nazwie decku. To unikalne identyfikatory, o których powiemy więcej za chwilę.
@@ -327,7 +325,7 @@ Playwright MCP ma tryb wizyjny (`--caps=vision`), w którym agent robi screensho
 
 **Weryfikacja wizualna przez model.** Agent robi screenshot, wysyła go do modelu wizyjnego i zadaje pytanie: "Czy karty fiszek nachodzą na siebie? Czy przycisk jest widoczny?" Model odpowiada ustrukturyzowanym JSON z oceną.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l4-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l4-lesson-draft-3-10x.png)
 
 To jest moment, w którym multimodalność robi realną robotę: vision weryfikuje to, czego drzewo dostępności nie wyraża, czyli czy wyrenderowany układ faktycznie wygląda poprawnie, a nie tylko czy elementy istnieją w DOM.
 
@@ -345,7 +343,7 @@ W testowaniu vision odpowiada na wąskie, weryfikowalne pytanie: czy ten konkret
 
 Pozostaje pytanie, kiedy je uruchamiać. W tym module zbudowaliśmy warstwowy system jakości:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l4-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l4-lesson-draft-4-10x.png)
 
 Testy E2E mają inny rytm niż hooki. Hooki odpalają się co edycję, w milisekundach. E2E uruchamiasz w CI, bo jeden pełny przebieg to minuty, nie milisekundy.
 
@@ -464,26 +462,25 @@ Porównanie na minimalnym przykładzie:
 ```typescript
 // POM — klasa z metodami
 class DeckPage {
-  constructor(private page: Page) {}
-  async createDeck(name: string) {
-    await this.page.getByRole('button', { name: 'New deck' }).click();
-    await this.page.getByRole('textbox', { name: 'Deck name' }).fill(name);
-    await this.page.getByRole('button', { name: 'Create' }).click();
-  }
+	constructor(private page: Page) {}
+	async createDeck(name: string) {
+		await this.page.getByRole('button', { name: 'New deck' }).click();
+		await this.page.getByRole('textbox', { name: 'Deck name' }).fill(name);
+		await this.page.getByRole('button', { name: 'Create' }).click();
+	}
 }
 
 // Fixture — funkcja z automatycznym setup/teardown
 const test = base.extend<{ deckName: string }>({
-  deckName: async ({ page }, use) => {
-    const name = `Deck ${Date.now()}`;
-    await page.getByRole('button', { name: 'New deck' }).click();
-    await page.getByRole('textbox', { name: 'Deck name' }).fill(name);
-    await page.getByRole('button', { name: 'Create' }).click();
-    await use(name);
-    await page.getByRole('button', { name: 'Delete deck' }).click();
-  },
+	deckName: async ({ page }, use) => {
+		const name = `Deck ${Date.now()}`;
+		await page.getByRole('button', { name: 'New deck' }).click();
+		await page.getByRole('textbox', { name: 'Deck name' }).fill(name);
+		await page.getByRole('button', { name: 'Create' }).click();
+		await use(name);
+		await page.getByRole('button', { name: 'Delete deck' }).click();
+	}
 });
-
 ```
 
 Seed test z głównej części lekcji naturalnie popycha agenta w kierunku fixtures: agent widzi wzorzec setup/teardown w jednej funkcji i powiela go w generowanych testach. (Przykład jest skrócony: pominęliśmy `import { test as base } from '@playwright/test'`, a teardown zakłada, że utworzony deck jest zaznaczony i widoczny.)
@@ -499,24 +496,23 @@ Konfiguracja wymaga dwóch kroków. Najpierw setup project deklaruje swój teard
 ```typescript
 // playwright.config.ts
 export default defineConfig({
-  projects: [
-    {
-      name: 'setup db',
-      testMatch: /global\.setup\.ts/,
-      teardown: 'cleanup db',
-    },
-    {
-      name: 'cleanup db',
-      testMatch: /global\.teardown\.ts/,
-    },
-    {
-      name: 'chromium',
-      use: { storageState: 'playwright/.auth/user.json' },
-      dependencies: ['setup db'],
-    },
-  ],
+	projects: [
+		{
+			name: 'setup db',
+			testMatch: /global\.setup\.ts/,
+			teardown: 'cleanup db'
+		},
+		{
+			name: 'cleanup db',
+			testMatch: /global\.teardown\.ts/
+		},
+		{
+			name: 'chromium',
+			use: { storageState: 'playwright/.auth/user.json' },
+			dependencies: ['setup db']
+		}
+	]
 });
-
 ```
 
 Teardown uruchamia się po wszystkich zależnych testach. W `global.teardown.ts` możesz np. czyścić testową bazę danych.

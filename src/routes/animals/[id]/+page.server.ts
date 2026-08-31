@@ -11,7 +11,11 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	const animal = await getOwnedAnimal(params.id, ownerId);
 
 	const [weights, events] = await Promise.all([
-		db.select().from(weightLogs).where(eq(weightLogs.animalId, animal.id)).orderBy(asc(weightLogs.measuredAt)),
+		db
+			.select()
+			.from(weightLogs)
+			.where(eq(weightLogs.animalId, animal.id))
+			.orderBy(asc(weightLogs.measuredAt)),
 		db
 			.select()
 			.from(healthEvents)
@@ -19,7 +23,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			.orderBy(desc(healthEvents.occurredAt))
 	]);
 
-	const trend = computeWeightTrend(weights.map((w) => ({ measuredAt: w.measuredAt, weightKg: w.weightKg })));
+	const trend = computeWeightTrend(
+		weights.map((w) => ({ measuredAt: w.measuredAt, weightKg: w.weightKg }))
+	);
 
 	return { animal, weights, events, trend };
 };
@@ -56,7 +62,9 @@ export const actions: Actions = {
 		const id = String(formData.get('id') ?? '');
 		if (!id) return fail(400, { error: 'Brak id.' });
 
-		await db.delete(weightLogs).where(and(eq(weightLogs.id, id), eq(weightLogs.animalId, animal.id)));
+		await db
+			.delete(weightLogs)
+			.where(and(eq(weightLogs.id, id), eq(weightLogs.animalId, animal.id)));
 		return { success: true };
 	},
 

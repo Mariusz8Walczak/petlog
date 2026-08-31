@@ -52,7 +52,9 @@ export function computeWeightTrend(logs: WeightPoint[]): WeightTrendResult {
 		return { status: 'insufficient_data' };
 	}
 
-	const sorted = [...logs].sort((a, b) => toDate(a.measuredAt).getTime() - toDate(b.measuredAt).getTime());
+	const sorted = [...logs].sort(
+		(a, b) => toDate(a.measuredAt).getTime() - toDate(b.measuredAt).getTime()
+	);
 	const latest = sorted[sorted.length - 1];
 	const latestDate = toDate(latest.measuredAt);
 

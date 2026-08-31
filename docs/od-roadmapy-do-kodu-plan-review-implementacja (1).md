@@ -1,10 +1,10 @@
 ---
-title: "Od roadmapy do kodu: plan, review, implementacja"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Od roadmapy do kodu: plan, review, implementacja'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m2-l2/assets/cover.jpg)
@@ -51,7 +51,7 @@ Dla naszego przykładowego projektu 10xCards najważniejszy jest teraz Stream A,
 
 W uproszczeniu wygląda to tak:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l2-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l2-lesson-draft-1-10x.png)
 
 W tej lekcji interesuje nas główny tor generowania i zapisywania kart:
 
@@ -118,7 +118,7 @@ atomic-save-to-deck
 
 `change-id` ma odpowiedzieć na pytanie: "o której konkretnej zmianie rozmawiamy i gdzie jest jej pamięć?".
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l2-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l2-lesson-draft-2-10x.png)
 
 To jest strategia `Write` z preworku o context engineeringu, tylko w wersji produkcyjnej. Wiedza nie żyje wyłącznie w rozmowie z agentem. Żyje w repozytorium.
 
@@ -195,7 +195,7 @@ Drugi artefakt, dodany przez nas już po pierwszych iteracjach, to `plan-brief.m
 
 Całość procesu planowania działa w ten sposób:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l2-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l2-lesson-draft-3-10x.png)
 
 Zobaczmy to w akcji:
 
@@ -236,7 +236,7 @@ Na tym etapie agent nie powinien wymyślać od nowa, co robić. Ma wziąć `plan
 
 Minimalny loop wygląda tak:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l2-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l2-lesson-draft-4-10x.png)
 
 Na razie wystarczy, że zobaczysz mechanikę:
 

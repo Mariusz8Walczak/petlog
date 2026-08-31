@@ -1,10 +1,10 @@
 ---
-title: "Analiza feature z AI: co działa, co kuleje, co zmodernizować"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Analiza feature z AI: co działa, co kuleje, co zmodernizować'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m4-l3/assets/cover.png)
@@ -60,7 +60,7 @@ Jeśli dobrze wykonałeś poprzednią lekcję, masz w `context/map/repo-map.md` 
 
 To są dokładnie te informacje, których agent potrzebuje, żeby nie czytać losowo. W tej lekcji najważniejsze będą trzy z nich: `Strefy ryzyka` (stąd wybierzesz cel), `Pierwszy dzień` (stąd weźmiesz entry pointy) i `Ograniczenia` (stąd wezmą się pierwsze `unknowns`).
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l3-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l3-lesson-draft-1-10x.png)
 
 Zwróć uwagę na kolejność. Najpierw mapa, potem wybór celu, potem zakres, potem semantyczna analiza, a na końcu strukturalne potwierdzenie. W dużym legacy to jest różnica między pracą z agentem a oglądaniem, jak agent pracuje po swojemu.
 
@@ -127,7 +127,7 @@ Sztuczka polega na tym, żeby sformułować jedno zapytanie tak, żeby rozbiło 
 - **sub-agent trace** → jak przepływ działa end-to-end,
 - **sub-agent luk w testach** → które ścieżki i gałęzie nie są pokryte,
 - **sub-agent blast radius** → co zmienia się razem z tym przepływem, gdy go ruszysz.
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l3-lesson-draft-2-10x.png) 
+  ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l3-lesson-draft-2-10x.png)
 
 To nie przypadek, że to akurat te trzy. Jeśli myślisz o pracy w legacy, potrzebujesz wiedzieć jak to działa, czy jest siatka bezpieczeństwa i jak daleko sięga zmiana. Reszta to szczegóły.
 
@@ -291,11 +291,10 @@ A jeśli dany rewrite ma być **powtarzalny** — częścią procesu, nie jednor
 id: no-var
 language: JavaScript
 severity: warning
-message: "Użyj `let` lub `const` zamiast `var`. Znaleziono: $NAME"
+message: 'Użyj `let` lub `const` zamiast `var`. Znaleziono: $NAME'
 rule:
   pattern: var $NAME = $VAL
 fix: let $NAME = $VAL
-
 ```
 
 ```bash
@@ -305,7 +304,7 @@ ast-grep scan --interactive
 
 To jest druga połowa narzędzia: te same deterministyczne wzorce, których użyliśmy do **dowodu**, stają się narzędziem **zmiany** — strukturalnej, powtarzalnej, łapiącej dokładnie ten kształt i żaden inny.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l3-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l3-lesson-draft-3-10x.png)
 
 **Ważne — w tej lekcji z tej połowy jeszcze nie korzystamy.** Wciąż jesteśmy na etapie zbierania dowodów: analiza, nie modyfikacja. Pokazuję ci rewrite teraz, żeby było jasne, że taka możliwość istnieje. Sięgniesz po nią, gdy któraś z twoich przyszłych zmian okaże się mechaniczną, zachowującą kształt transformacją.
 

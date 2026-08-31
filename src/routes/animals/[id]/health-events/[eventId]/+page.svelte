@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -25,7 +26,13 @@
 		{#if data.event.notes}<p class="mt-1 text-sm text-gray-600">{data.event.notes}</p>{/if}
 	</div>
 	<div class="flex gap-3 text-sm">
-		<a href="/animals/{data.animal.id}/health-events/{data.event.id}/edit" class="hover:underline">Edytuj</a>
+		<a
+			href={resolve('/animals/[id]/health-events/[eventId]/edit', {
+				id: data.animal.id,
+				eventId: data.event.id
+			})}
+			class="hover:underline">Edytuj</a
+		>
 		<form method="POST" action="?/deleteEvent" use:enhance>
 			<button type="submit" class="text-red-600 hover:underline">Usuń</button>
 		</form>
@@ -35,7 +42,13 @@
 <section class="rounded border border-gray-200 bg-white p-4">
 	<div class="mb-2 flex items-center justify-between">
 		<h2 class="text-lg font-semibold">Leczenie</h2>
-		<a href="/animals/{data.animal.id}/health-events/{data.event.id}/treatments/new" class="text-sm hover:underline">
+		<a
+			href={resolve('/animals/[id]/health-events/[eventId]/treatments/new', {
+				id: data.animal.id,
+				eventId: data.event.id
+			})}
+			class="text-sm hover:underline"
+		>
 			+ Dodaj
 		</a>
 	</div>
@@ -44,11 +57,19 @@
 			<li class="flex items-center justify-between border-b border-gray-100 py-1">
 				<span>
 					<strong>{t.name}</strong>
-					{#if t.dosage}({t.dosage}){/if} — {t.startDate}{#if t.endDate} → {t.endDate}{/if}
+					{#if t.dosage}({t.dosage}){/if} — {t.startDate}{#if t.endDate}
+						→ {t.endDate}{/if}
 					<span class="text-gray-500">· {outcomeLabel[t.outcome]}</span>
 				</span>
 				<span class="flex items-center gap-3">
-					<a href="/animals/{data.animal.id}/health-events/{data.event.id}/treatments/{t.id}/edit" class="hover:underline">
+					<a
+						href={resolve('/animals/[id]/health-events/[eventId]/treatments/[treatmentId]/edit', {
+							id: data.animal.id,
+							eventId: data.event.id,
+							treatmentId: t.id
+						})}
+						class="hover:underline"
+					>
 						Edytuj
 					</a>
 					<form method="POST" action="?/deleteTreatment" use:enhance>

@@ -1,10 +1,10 @@
 ---
-title: "Hooki i triggery: Agent, który sam reaguje na błędy"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Hooki i triggery: Agent, który sam reaguje na błędy'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m3-l3/assets/cover.jpg)
@@ -19,7 +19,7 @@ A gdyby narzędzie mogło zrobić to za ciebie? Nie przy okazji w ramach pipelin
 
 Harnessy udostępniają nam hooki, które pozwolą poradzić sobie z tym problemem.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l3-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l3-lesson-draft-1-10x.png)
 
 ### Cykl życia hooka
 
@@ -31,7 +31,7 @@ Każdy hook składa się z czterech części:
 2. **Matcher** — filtr, który decyduje, czy ten konkretny hook powinien się uruchomić. Może reagować na konkretne narzędzia (`Write`, `Edit`), typy plików albo wzorce nazw.
 3. **Handler** — komenda, skrypt albo inna akcja, która się wykonuje. Najczęściej to komenda shell.
 4. **Sygnał** — wynik hooka wraca do narzędzia. Exit code mówi, czy wszystko jest OK, a stdout może trafić do kontekstu agenta jako feedback.
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l3-lesson-draft-2-10x.png) 
+   ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l3-lesson-draft-2-10x.png)
 
 Wzorzec jest uniwersalny: Claude Code, Cursor, Codex, Windsurf, Copilot - wszędzie spotkasz te same cztery kroki. Różnią się nazwy zdarzeń i głębokość konfiguracji, ale architektura jest ta sama.
 
@@ -52,22 +52,21 @@ Najczęstszy pierwszy hook to automatyczny lint po każdej edycji pliku. Konfigu
 
 ```json
 {
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "npx eslint --fix . --quiet",
-            "timeout": 10000
-          }
-        ]
-      }
-    ]
-  }
+	"hooks": {
+		"PostToolUse": [
+			{
+				"matcher": "Write|Edit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "npx eslint --fix . --quiet",
+						"timeout": 10000
+					}
+				]
+			}
+		]
+	}
 }
-
 ```
 
 Hooki konfigurujemy w ustawieniach harnessu, dla Claude Code to `settings.json`, który może żyć w trzech miejscach:
@@ -88,11 +87,10 @@ Skoro lint działa, naturalny następny krok to typecheck. Do listy hooków `Pos
 
 ```json
 {
-  "type": "command",
-  "command": "npx tsc --noEmit",
-  "timeout": 30000
+	"type": "command",
+	"command": "npx tsc --noEmit",
+	"timeout": 30000
 }
-
 ```
 
 I tu pojawia się pytanie, które wraca przy każdym nowym hooku: jak szybko to musi działać, żeby się opłacało?
@@ -128,18 +126,17 @@ PostToolUse hooks dostają kontekst zdarzenia jako JSON na stdin. Żeby wyciągn
 
 ```json
 {
-  "type": "command",
-  "command": "bash -c 'FILE=$(jq -r .tool_input.file_path) && npx vitest related \"$FILE\" --run'",
-  "timeout": 30000
+	"type": "command",
+	"command": "bash -c 'FILE=$(jq -r .tool_input.file_path) && npx vitest related \"$FILE\" --run'",
+	"timeout": 30000
 }
-
 ```
 
 Ale nie każda edycja wymaga uruchomienia testów. Utility helper, plik konfiguracyjny, komponent prezentacyjny — to nie muszą być pliki, dla których sensownie jest odpalać testy po każdej edycji.
 
 Tutaj wraca `context/foundation/test-plan.md` z M3L1\. Opisane tam obszary ryzyka mówią ci, które fragmenty kodu są warte automatycznego sprawdzenia po edycji.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l3-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l3-lesson-draft-3-10x.png)
 
 Jedno ograniczenie warto znać od razu: PostToolUse odpala się raz na jedno użycie narzędzia. Jeśli agent edytuje trzy pliki w jednej turze, hook odpali się trzy razy niezależnie. Jeżeli Twoje testy wykonują się szybko (a powinny), to nie będzie to problematyczne. W innym przypadku musisz dodać bardziej restrykcyjny Matcher, co już w dużym stopniu zależy od stacku technologicznego i architektury projektu - warto nad tym poiterować wspólnie z agentem.
 
@@ -178,7 +175,7 @@ Do tej pory mówiliśmy o hookach per-edit. To dopiero pierwsza warstwa.
 
 Pełny model lokalnej jakości składa się z trzech warstw plus CI jako czwartej:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l3-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l3-lesson-draft-4-10x.png)
 
 Każda warstwa łapie co innego i działa w innym momencie.
 
@@ -213,14 +210,13 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      glob: "*.{ts,tsx,js,jsx}"
+      glob: '*.{ts,tsx,js,jsx}'
       run: npx eslint --fix {staged_files} && git add {staged_files}
     typecheck:
       run: npx tsc --noEmit
     test:
-      glob: "*.{ts,tsx}"
+      glob: '*.{ts,tsx}'
       run: npx vitest related {staged_files} --run
-
 ```
 
 `{staged_files}` wstawia listę plików dodanych do staging area. Lint i testy operują na dokładnie tych zmianach, które zamierzasz commitować. `pre-commit` i lint-staged mają własne odpowiedniki tego mechanizmu.

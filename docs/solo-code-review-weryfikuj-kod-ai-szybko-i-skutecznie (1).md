@@ -1,10 +1,10 @@
 ---
-title: "Solo Code Review: weryfikuj kod AI szybko i skutecznie"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Solo Code Review: weryfikuj kod AI szybko i skutecznie'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m2-l3/assets/cover.jpg)
@@ -111,7 +111,7 @@ Polecamy to drugie podejście, szczególnie przy większych zmianach. Czytasz ra
 
 Review kończy się dopiero wtedy, gdy przejdziesz przez findings i podejmiesz decyzję dla każdego z nich.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l3-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l3-lesson-draft-1-10x.png)
 
 Mamy zasadniczo cztery typy reakcji. To prostsze niż wygląda na początku.
 

@@ -1,10 +1,10 @@
 ---
-title: "Debugowanie z AI: od stack trace"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Debugowanie z AI: od stack trace'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m3-l5/assets/cover.jpg)
@@ -56,7 +56,7 @@ Masz teraz konkrety: kroki reprodukcji, zakres problemu, częstotliwość, możl
 
 Nie każdy symptom prowadzi do monitoringu. Różne sygnały sugerują różne źródła:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-1-10x.png)
 
 W naszym przypadku: API zwraca 200, ale ocena nie zmienia harmonogramu. Zaczynamy od Sentry.
 
@@ -147,17 +147,16 @@ Agent czyta `rate.ts`. Handler liczy nowy stan karty w pamięci (`updated`), zap
 
 ```typescript
 if (updateError) {
-  console.warn(`review/rate: update_failed ...`);
-  return jsonResponse(200, { ok: true }); // ← błąd połknięty, zwracamy „sukces"
+	console.warn(`review/rate: update_failed ...`);
+	return jsonResponse(200, { ok: true }); // ← błąd połknięty, zwracamy „sukces"
 }
-
 ```
 
 Zestawiamy to z danymi z Sentry: błąd na UPDATE do `review_states`. Zapis pada (handler wpisuje do kolumny wartość, którą baza odrzuca przy każdej próbie), ale błąd nie leci dalej. Zamiast zwrócić 500, handler loguje `console.warn` i odpowiada `200 { ok: true }`. Frontend patrzy tylko na status odpowiedzi, więc przechodzi do następnej karty jak gdyby nigdy nic — a nowy termin nigdy nie trafił do bazy.
 
 Stąd 200 OK i karta, która wygląda na ocenioną. A ponieważ powtórka wybiera karty po `due <= teraz`, niezmieniony termin oznacza, że ta sama karta wraca przy każdym kolejnym otwarciu powtórki.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-2-10x.png)
 
 Zwróć uwagę: żadne pojedyncze źródło nie wystarczyło do pełnej diagnozy.
 
@@ -165,7 +164,7 @@ Zwróć uwagę: żadne pojedyncze źródło nie wystarczyło do pełnej diagnozy
 - **Logi** dały skalę (każda ocena)
 - **Reprodukcja z Playwright** dała kontekst (ocena zwraca 200, ale karta wraca)
 - **Kod** dał root cause (połknięty błąd zapisu i zwrócony jako sukces)
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-3-10x.png) 
+  ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-3-10x.png)
 
 Agent połączył te sygnały w spójną diagnozę. To jest ta umiejętność, której się tu uczysz — nie czytanie kodu i nie konfiguracja narzędzi, ale prowadzenie dochodzenia, w którym każde źródło dodaje coś, czego inne nie miały.
 
@@ -181,18 +180,17 @@ Agent pisze test integracyjny, który sprawdza zapisany stan, a nie odpowiedź A
 
 ```typescript
 test('rating a due card advances its persisted schedule', async () => {
-  // arrange: seed a review_states row that is already due
-  const { flashcardId } = await seedDueCard(accountId);
+	// arrange: seed a review_states row that is already due
+	const { flashcardId } = await seedDueCard(accountId);
 
-  // act: rate it "Good" via the endpoint
-  await rateCard(flashcardId, 'Good');
+	// act: rate it "Good" via the endpoint
+	await rateCard(flashcardId, 'Good');
 
-  // assert: the PERSISTED row moved into the future
-  const row = await getReviewState(flashcardId);
-  expect(new Date(row.due).getTime()).toBeGreaterThan(Date.now());
-  expect(row.reps).toBe(1);
+	// assert: the PERSISTED row moved into the future
+	const row = await getReviewState(flashcardId);
+	expect(new Date(row.due).getTime()).toBeGreaterThan(Date.now());
+	expect(row.reps).toBe(1);
 });
-
 ```
 
 Jak doprowadzić agenta do takiego testu? Najpierw opisz mu objaw i zażądaj testu, który pada z właściwego powodu, czyli sprawdza trwały stan w bazie, a nie status odpowiedzi:
@@ -219,23 +217,22 @@ Naprawa ma dwie części. Po pierwsze, przestajemy połykać błąd: zamiast zwr
 ```typescript
 // przed:
 if (updateError) {
-  console.warn(`review/rate: update_failed ...`);
-  return jsonResponse(200, { ok: true });
+	console.warn(`review/rate: update_failed ...`);
+	return jsonResponse(200, { ok: true });
 }
 
 // po:
 if (updateError) {
-  console.warn(`review/rate: update_failed ...`);
-  return jsonResponse(500, { error: "rate_failed" });
+	console.warn(`review/rate: update_failed ...`);
+	return jsonResponse(500, { error: 'rate_failed' });
 }
-
 ```
 
 Po drugie, naprawiamy sam zapis, żeby UPDATE przechodził. Dopiero połączenie obu zmian daje kartę, która faktycznie znika z kolejki: samo odsłonięcie błędu (zamiast jego połykania) zamienia ciche 200 na widoczne 500, a poprawny zapis sprawia, że harmonogram naprawdę się przesuwa. To zresztą sedno tej klasy bugów. Najpierw przestajesz ukrywać, co dzieje się w systemie, a dopiero gdy błąd jest widoczny, możesz go porządnie obsłużyć i naprawić.
 
 Ale samo "działa lokalnie" to za mało. Każde źródło diagnostyczne, które pokazało problem, powinno teraz potwierdzić, że go nie ma:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-4-10x.png)
 
 Weryfikacja jest lustrzanym odbiciem dochodzenia. Diagnozowałeś czterema kanałami, weryfikujesz czterema. Jeśli pominiesz którąś warstwę, nie masz pewności, że fix jest kompleksowy.
 
@@ -262,7 +259,7 @@ Automatyczne bramki, które realnie odpalają się przy każdej zmianie, nie mia
 
 Proces, który właśnie przeszedłeś, działa niezależnie od tego, skąd dostajesz pierwszy sygnał:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-5-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m3-l5-lesson-draft-5-10x.png)
 
 Co się zmienia? Punkt wejścia i ilość danych na starcie. Unit test daje ci asercję i stack trace od razu — szybciej decydujesz, gdzie szukać. Ticket od użytkownika zwykle daje ci jedno zdanie, sam musisz dotrzeć do błędu w systemie.
 
@@ -301,29 +298,28 @@ Darmowy plan Sentry (Developer) daje 5000 błędów miesięcznie, 30 dni retencj
 Do projektu Astro na Cloudflare potrzebujesz dwóch pakietów: `@sentry/astro` i `@sentry/cloudflare`. SDK automatycznie wykrywa adapter Cloudflare od wersji 10.40.0\. W `wrangler.toml` trzeba włączyć `nodejs_compat`.
 
 > **Uwaga — Astro 6 na Cloudflare:** Astro 6 wymaga adaptera `@astrojs/cloudflare` w wersji 13+, który integruje się z Cloudflare przez custom entry point. Od `@sentry/astro` 10.44.0 ([issue #19762](https://github.com/getsentry/sentry-javascript/issues/19762)) ta ścieżka jest wspierana — i to właśnie konfiguracja dla 10xCards (Astro 6.3.1, deploy na Workers). Zamiast domyślnego entry pointu adaptera wskazujesz w `wrangler.toml` własny plik, który owija handler Astro w Sentry:
-> 
+>
 > ```toml
 > # wrangler.toml
 > main = "./sentry.server.config.ts"  # zamiast "@astrojs/cloudflare/entrypoints/server"
-> 
+>
 > ```
-> 
+>
 > ```typescript
 > // sentry.server.config.ts
-> import * as Sentry from "@sentry/cloudflare";
-> import handler from "@astrojs/cloudflare/entrypoints/server";
-> 
+> import * as Sentry from '@sentry/cloudflare';
+> import handler from '@astrojs/cloudflare/entrypoints/server';
+>
 > export default Sentry.withSentry(
->  (env: Env) => ({
->    dsn: env.SENTRY_DSN,
->    // przekaż console.warn / console.error do Sentry jako zdarzenia
->    integrations: [Sentry.captureConsoleIntegration({ levels: ["warn", "error"] })],
->  }),
->  handler,
+> 	(env: Env) => ({
+> 		dsn: env.SENTRY_DSN,
+> 		// przekaż console.warn / console.error do Sentry jako zdarzenia
+> 		integrations: [Sentry.captureConsoleIntegration({ levels: ['warn', 'error'] })]
+> 	}),
+> 	handler
 > );
-> 
 > ```
-> 
+>
 > Czysto frontendowe Astro (bez adaptera Cloudflare) opiera się o issue [#19753](https://github.com/getsentry/sentry-javascript/issues/19753) — tam przed wdrożeniem na Astro 6 sprawdź aktualny status.
 
 To właśnie `captureConsoleIntegration` sprawia, że połknięty `console.warn` z naszego buga w ogóle pojawia się w Sentry. Jest tu jednak haczyk kosztowy: przechwycone warningi i błędy lądują w tym samym strumieniu issues i zużywają ten sam limit błędów co nieobsłużone wyjątki (na darmowym planie 5000 zdarzeń miesięcznie). Na wczesnym etapie projektu, przy małym ruchu, łapanie wszystkich warningów i błędów jest rozsądnym domyślnym wyborem, bo zależy ci na maksymalnej widoczności. Wraz ze wzrostem ruchu to się nie skaluje: zawęź `levels` (np. do `['error']`) albo zgłaszaj wybrane przypadki ręcznie przez `Sentry.captureException`, żeby nie przepalać limitu i nie zalewać realnych awarii szumem.

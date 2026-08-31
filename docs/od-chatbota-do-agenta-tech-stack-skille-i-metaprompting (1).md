@@ -1,10 +1,10 @@
 ---
-title: "Od Chatbota do Agenta: tech stack, skille i metaprompting"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Od Chatbota do Agenta: tech stack, skille i metaprompting'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 W poprzedniej lekcji twój pomysł na projekt przeszedł sesję sokratejską i wylądował na dysku jako **prd.md**: kontrakt opisujący _co_ budujesz, dla kogo i po czym poznasz, że działa.
@@ -40,7 +40,7 @@ Okno kontekstowe to budżet (wiesz to z preworku [\[3.1\]](https://platforma.prz
 
 Dwadzieścia zainstalowanych skilli kosztuje cię \~2000 tokenów metadanych, nie \~100 000 tokenów pełnych instrukcji. Agent wie _o_ nich wszystkich, ale _czyta_ tylko te, które uruchamia.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l2-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l2-lesson-draft-1-10x.png)
 
 ### Skill vs jednorazowy prompt
 
@@ -55,7 +55,7 @@ Skill daje pięć gwarancji, których jednorazowy prompt zwykle nie daje sam z s
 3. **Ma kontrakt wejścia/wyjścia zapisany w procedurze.** Czyta plik z dysku (np. **prd.md**), zapisuje wynik jako plik (np. **tech-stack.md**) i robi to według powtarzalnego schematu. Prompt też może poprosić o plik, ale za każdym razem musisz odtworzyć reguły.
 4. **Uruchamia się po nazwie.** Piszesz **/10x-tech-stack-selector** i wiesz, co dostaniesz. Nie odtwarzasz pełnej instrukcji z głowy ani nie kopiujesz z notatnika za każdym razem.
 5. **Jest powtarzalny między sesjami.** Zamykasz sesję, otwierasz nową za tydzień i wracasz do tej samej procedury. Wynik modelu nadal może się różnić (brak determinizmu), ale kontrakt pracy zostaje ten sam.
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l2-lesson-draft-2-10x.png) 
+   ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l2-lesson-draft-2-10x.png)
 
 Reguła decyzyjna jest prosta: **powtarzalny proces** \- sięgaj po skill. **Jednorazowa eksploracja, wyjaśnienie albo edycja** \- napisz prompt i ruszaj dalej.
 
@@ -123,7 +123,7 @@ Teoria za nami. Czas zobaczyć, jak skill pracuje na prawdziwym projekcie.
 
 Wróćmy do PRD z lekcji Od pomysłu do PRD (M1L1). Mamy **prd.md** projektu 10xCards, aplikacji do fiszek z AI.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l2-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l2-lesson-draft-3-10x.png)
 
 **Najpierw: ad-hoc prompt.**
 
@@ -157,7 +157,6 @@ has_ai: true
 has_payments: false
 has_realtime: false
 has_background_jobs: false
-
 ```
 
 W dokumencie będzie również sekcja "Why this stack" wiążąca wymagania z PRD z możliwościami wybranego stacku technologicznego.
@@ -217,10 +216,9 @@ components_assessed:
     popular_in_training: pass
     well_documented: pass
 compensation:
-  - "Opisz konwencje nazewnicze i strukturę katalogów w regułach agenta"
-  - "Zdefiniuj wzorce middleware i error-handling w pliku konfiguracyjnym"
-  - "Wymuś JSDoc na publicznych interfejsach"
-
+  - 'Opisz konwencje nazewnicze i strukturę katalogów w regułach agenta'
+  - 'Zdefiniuj wzorce middleware i error-handling w pliku konfiguracyjnym'
+  - 'Wymuś JSDoc na publicznych interfejsach'
 ```
 
 Express przechodzi bramki "popular" i "documented", ale nie "typed" (brak systemu typów) ani "convention-based" (brak narzuconej struktury katalogów). Bez kompensacji agent będzie generował kod, który _działa_, ale może łamać konwencje twojego projektu.
@@ -249,7 +247,7 @@ Cały moduł 1 przygotowuje środowisko do pracy z agentem: PRD jako kontrakt (M
 
 Każdy z tych skilli ma ten sam format: **SKILL.md** \+ **references/** \+ opcjonalnie **scripts/**. Każdy czyta plik wyprodukowany przez wcześniejszy krok i zapisuje wynik jako wejście dla następnego.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l2-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l2-lesson-draft-4-10x.png)
 
 Nie uczysz się nowej abstrakcji w każdym module. Uczysz się kolejnego ogniwa bazującego na tym samym fundamencie specyfikacji Agent Skills.
 

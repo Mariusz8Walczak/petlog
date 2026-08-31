@@ -1,10 +1,10 @@
 ---
-title: "Innovate: Async & Remote Agents - deleguj i zajmij się czymś innym"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Innovate: Async & Remote Agents - deleguj i zajmij się czymś innym'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m5-l5/assets/cover.jpg)
@@ -112,7 +112,7 @@ Zamiast założyć "standardowy agent w chmurze", zapisz sobie jawnie:
 - co ma być dostępne przez MCP,
 - do jakich hostów Agent może się łączyć,
 - jakich sekretów nie wolno mu dostać.
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l5-lesson-draft-1-10x.png) 
+  ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l5-lesson-draft-1-10x.png)
 
 Ten przepływ jest mniej efektowny niż "Agent pracuje za mnie w chmurze", ale dużo bliższy prawdzie. Asynchroniczna praca zaczyna się przed uruchomieniem Agenta.
 
@@ -192,7 +192,7 @@ Taki przebieg powinien mieć:
 
 Najbezpieczniej myśleć o routine jak o małym kontrakcie, który kończy się review, a nie automatycznym zaufaniem:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l5-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l5-lesson-draft-2-10x.png)
 
 Ostatni punkt jest najważniejszy. Zielony przebieg może znaczyć tylko tyle, że sesja zakończyła się bez błędu infrastruktury. Nie znaczy, że rekomendacja ma sens, PR jest gotowy, testy pokrywają ryzyko albo koszt był uzasadniony.
 
@@ -224,7 +224,7 @@ W sandboxie chmurowym kontrolujesz setup, sieć, MCP, sekrety i zakres zadania p
 
 W pętlach i routines kontrolujesz trigger, warunek stopu, budżet i kryteria sukcesu.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l5-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l5-lesson-draft-3-10x.png)
 
 To jest mocniejszy model niż "zaufaj agentowi". Agent może działać bez twojej ciągłej obecności, bo wcześniej przygotowałeś mu bezpieczny tor jazdy.
 
@@ -240,14 +240,14 @@ Twoim zadaniem jest przygotować i, jeśli masz dostęp, uruchomić jedno realne
 
 1. **Wybierz zadanie o jasnych granicach.** Dobry kandydat to porządkowanie dokumentacji, aktualizacja test planu, drobna poprawka setupu, mały wycinek backlogu albo przegląd zaległych issue. Unikaj zadań wymagających decyzji produktowych na żywo, szerokiego dostępu do produkcji albo sekretów, których nie da się ograniczyć.
 2. **Wybierz moment kontroli.** Jeśli wykonanie ma zostać u ciebie, wybierz Remote Control, SSH/tmux albo Happy. Jeśli chcesz uruchomić zadanie i wrócić do wyniku, wybierz zarządzany sandbox w chmurze. Jeśli zadanie ma wracać cyklicznie, wybierz routine albo pętlę narzędziową dostępną w twoim środowisku.
-3. **Ustal granice przed startem.** Złóż polecenie dla Agenta i ustaw konfigurację sandboxa tak, żeby świadomie objąć:  
-   - cel zadania,  
-   - warunek stopu,  
-   - pliki lub obszary w zakresie,  
-   - wymagania setupu,  
-   - wymagania sieciowe,  
-   - wymagania MCP albo konfiguracji repo,  
-   - sekrety i dostępy, których Agent nie powinien dostać,  
+3. **Ustal granice przed startem.** Złóż polecenie dla Agenta i ustaw konfigurację sandboxa tak, żeby świadomie objąć:
+   - cel zadania,
+   - warunek stopu,
+   - pliki lub obszary w zakresie,
+   - wymagania setupu,
+   - wymagania sieciowe,
+   - wymagania MCP albo konfiguracji repo,
+   - sekrety i dostępy, których Agent nie powinien dostać,
    - checklistę review.
 4. **Uruchom zadanie, jeśli dostęp pozwala.** Jeśli twoje zadanie jest zaplanowaną zmianą, uruchom je bez nadzoru przez `/10x-goal-implement` pod `/goal` (interaktywnie albo headless przez `claude -p`) i pozwól bramkom jakości pilnować każdej fazy. Jeżeli dostęp do funkcji preview, plan konta albo polityka firmy blokuje wykonanie, zrób operacyjny dry run: oznacz każdy krok jako `wykonane`, `zablokowane przez dostęp` albo `do sprawdzenia przed wdrożeniem`.
 5. **Monitoruj tylko wtedy, gdy to ma sens.** W trybie lokalnej kontroli możesz sterować z telefonu. W sandboxie chmurowym sprawdź status i zatrzymaj zadanie, jeśli Agent utknął na setupie, sieci albo braku dostępu. W routine albo pętli narzędziowej nie oceniaj sukcesu po samym zielonym statusie.

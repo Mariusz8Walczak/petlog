@@ -1,10 +1,10 @@
 ---
-title: "Od localhost po produkcję - Deployment z Agentem"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Od localhost po produkcję - Deployment z Agentem'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 Na tym etapie szkolenia projekt działa już lokalnie, a agent zaczyna go coraz lepiej rozumieć. Moglibyśmy w tym stanie pozostać jeszcze długo, dodając kolejne funkcje, pliki i moduły - całość rosłaby w oczach a ty miałbyś złudne poczucie progressu.
@@ -38,7 +38,7 @@ Albo powiedz agentowi: _"pobierz paczkę z lekcji m1l5"_ — skill `10x-cli-guid
 
 Do tej pory każda lekcja modułu 1 zostawiała w repo konkretny plik albo stan. PRD opisuje co i dla kogo budujesz, tech-stack opisuje z czego, scaffoldowane repo daje punkt startu, a AGENTS.md uczy agenta lokalnych konwencji. Brakuje ostatniego ogniwa - **gdzie i jak to wszystko działa**.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-1-10x.png)
 
 To miejsce zapełnimy nowym artefaktem - `infrastructure.md`. Ale zanim do niego dojdziemy, warto zatrzymać się przy pytaniu, na które ten plik ma odpowiedzieć.
 
@@ -71,7 +71,7 @@ Uruchomisz go poprzez:
 
 Założenia omawianego procesu wyglądają następująco:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-2-10x.png)
 
 Co dzieje się w trakcie:
 
@@ -155,7 +155,7 @@ context/foundation/infrastructure.md
 
 To trzeci kontrakt w łańcuchu, który budujemy od początku modułu:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-3-10x.png)
 
 Plik jest krótki, ale ustrukturyzowany. Sensowny szkielet zawiera:
 
@@ -203,7 +203,7 @@ Przy tej okazji warto też wrócić do skilla `/10x-lesson` \- jeśli zauważysz
 
 Efekt netto: agent działa bardziej przewidywalnie, a ty masz punkt odniesienia, który nie znika razem z kontekstem.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-4-10x.png)
 
 Wsad do Plan Mode może się różnić w zależności od zadania. Teraz to dwa pliki referencyjne i krótki cel: "Wykonajmy pierwsze wdrożenie w oparciu o `@infrastructure.md`, zgodnie ze stackiem z `@tech-stack.md`".
 
@@ -278,7 +278,7 @@ W preworku [\[2.1\]](https://platforma.przeprogramowani.pl/courses/10xdevs-3-pre
 
 Druga ścieżka to **MCP** (Model Context Protocol). Zamiast wywoływać dowolne komendy shellowe, agent rozmawia z dedykowanym serwerem, który eksponuje konkretny zestaw narzędzi - na przykład "lista deploymentów", "logi z ostatniej godziny", "zmienne środowiskowe projektu". Każde narzędzie ma jawnie zdefiniowany schemat wejścia i wyjścia, a serwer pilnuje uprawnień.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-5-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m1-l5-lesson-draft-5-10x.png)
 
 No dobra, więc pojawia się oczywiste pytanie - to którą opcję wybrać? Anthropic w swoim [tekście o agentach produkcyjnych](https://claude.com/blog/building-agents-that-reach-production-systems-with-mcp) pisze wprost: API, CLI i MCP to trzy uzupełniające się drogi. Dojrzała platforma często udostępnia wszystkie trzy. Netlify w dokumentacji [zaleca instalację swojego CLI razem z serwerem MCP](https://docs.netlify.com/welcome/build-with-ai/netlify-mcp-server/), bo MCP używa pod spodem CLI tam, gdzie to ma sens.
 
@@ -328,13 +328,12 @@ Aby podłączyć się do tak zoptymalizowanego MCP, w roocie repo dodaj serwer w
 
 ```json
 {
-  "mcpServers": {
-    "cloudflare": {
-      "url": "https://mcp.cloudflare.com/mcp"
-    }
-  }
+	"mcpServers": {
+		"cloudflare": {
+			"url": "https://mcp.cloudflare.com/mcp"
+		}
+	}
 }
-
 ```
 
 Po starcie sesji wybierz komendę `/mcp`, a następnie pozycję `Cloudflare` \- klient otworzy w przeglądarce flow OAuth do Cloudflare - logujesz się raz, token zostaje zapisany lokalnie przez klienta MCP, agent dostaje dostęp z zakresem twojego konta.

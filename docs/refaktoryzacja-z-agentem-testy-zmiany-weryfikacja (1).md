@@ -1,10 +1,10 @@
 ---
-title: "Refaktoryzacja z Agentem: testy, zmiany, weryfikacja"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Refaktoryzacja z Agentem: testy, zmiany, weryfikacja'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m4-l4/assets/cover.png)
@@ -45,7 +45,7 @@ Pytanie "do czego modernizować?" ma zaskakująco starą, praktyczną odpowiedź
 
 To jest spektrum, nie ranking. Żaden z tych kształtów nie jest "lepszy" - każdy ma próg opłacalności zależny od ilości i zmienności logiki.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l4-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l4-lesson-draft-1-10x.png)
 
 Po co ci to spektrum? Bo zamienia "ten kod jest brzydki" w tezę, którą da się obronić albo obalić.
 
@@ -97,7 +97,7 @@ Dwie strategie pokrywają większość przypadków:
 
 **Branch by Abstraction**: duża zmiana bez długotrwałego, zablokowanego brancha. Wstawiasz abstrakcję nad miejscem interakcji ze starym kodem i dalej idziesz etapami, a główna gałąź przez cały czas trwania zmiany nadaje się do wydania:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l4-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l4-lesson-draft-2-10x.png)
 
 Została kwestia porządku kroków. Przy dużej zmianie wszystko zależy od wszystkiego - od czego zacząć? Praktyczna mechanika wygląda tak: spróbuj docelowej zmiany, zobacz, co przestaje działać, zapisz to, a potem **cofnij** zmianę i rozwiązuj problemy od najdalszego liścia do korzenia zmiany. Z "wielkiej zmiany" robi się graf małych kroków, z których każdy jest weryfikowalny i osobno odwracalny. W literaturze ta metoda ma nazwę i własny graf - znajdziesz je w Deep Dive.
 
@@ -247,7 +247,7 @@ Każdy etap złapał to, co przepuścił poprzedni. Im bliżej implementacji, ty
 
 Efektem sesji jest `plan.md` w czterech fazach, ułożonych w porządku guard-first:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l4-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m4-l4-lesson-draft-3-10x.png)
 
 Warto się skupić na dwóch własnościach planu, bo to one niosą całą filozofię lekcji:
 

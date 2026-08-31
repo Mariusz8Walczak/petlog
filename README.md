@@ -51,6 +51,13 @@ pnpm run test:e2e            # Playwright — weight-trend-alert.spec.ts
 The e2e run builds the app and boots it with `vite preview`, first running
 `db:migrate` + `seed` against the local `.env` DB so the seeded user exists.
 
+On Windows, `pnpm run test:e2e` (`vite build && playwright test`) can fail to
+even start Playwright because of the `vite build` exit-code issue described
+below — the `&&` never proceeds. Workaround: run `pnpm exec playwright test`
+directly (it builds are picked up from the last successful build under
+`build/`, or run `pnpm run build` once first and ignore its exit code). This
+does not affect Docker or CI (Linux), where `vite build` exits 0 normally.
+
 ## What's implemented
 
 Full CRUD on animals, weight logs, health events, and treatments, scoped to
@@ -60,7 +67,7 @@ the logged-in user. Two pieces of domain logic drive the actual value:
   compares the latest weight entry to the one nearest ~30 days earlier;
   badges the animal page `stable` / `watch` / `alert`.
 - **`suggestTreatments()`** (`src/lib/server/domain/treatmentSuggestion.ts`) —
-  on the "add health event" form, surfaces past treatments for the *same*
+  on the "add health event" form, surfaces past treatments for the _same_
   animal whose symptom text matches, `helped` outcomes ranked first.
 
 ## Deviations from context/foundation/tech-stack.md
@@ -81,6 +88,20 @@ implementacyjna" / "Uruchamianie w Dockerze"); summary:
   migrations via `drizzle-orm`'s own runtime migrator.
 - Playwright specs live in `e2e/` (outside `src/`) so `*.spec.ts` can be used
   without colliding with Vitest's `src/**` scan.
+
+## Known issue: `pnpm run build` exit code on Windows
+
+On Windows, `vite build` (Vite 8, which bundles via Rolldown by default)
+writes a complete, correct `build/` output — then crashes with a native
+access-violation _after_ printing its `[PLUGIN_TIMINGS]` diagnostics, so the
+process exits non-zero even though the build succeeded. This is a known
+upstream Rolldown/Windows issue (see e.g. vitejs/rolldown-vite#584 and
+related issues), not specific to this project — confirmed by inspecting
+`build/index.js` / `build/handler.js` after the "crash": they're present and
+correct. It reproduces even on the latest `vite@8.2.2`. The Docker build
+(Linux, `node:22-slim`) is unaffected — that's the path this app actually
+ships through. If it blocks a `pnpm run build` you're relying on locally on
+Windows, run it inside the Docker build instead, or under WSL.
 
 ## Project docs
 

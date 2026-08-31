@@ -42,7 +42,9 @@ export const actions: Actions = {
 		const id = String(formData.get('id') ?? '');
 		if (!id) return fail(400, { error: 'Brak id.' });
 
-		await db.delete(treatments).where(and(eq(treatments.id, id), eq(treatments.healthEventId, event.id)));
+		await db
+			.delete(treatments)
+			.where(and(eq(treatments.id, id), eq(treatments.healthEventId, event.id)));
 		return { success: true };
 	}
 };

@@ -1,10 +1,10 @@
 ---
-title: "Research i implementacja: trudniejszy stream z AI"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Research i implementacja: trudniejszy stream z AI'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![cover](https://images.przeprogramowani.pl/lessons/m2-l4/assets/cover.jpg)
@@ -29,7 +29,7 @@ Bo z perspektywy nauki deck pełen kart bez sesji powtórek to po prostu lepsza 
 
 Brakuje nam systemu powtórek:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-1-10x.png)
 
 `S-04` to właśnie ta pętla. Karta zyskuje `ReviewState`. Z `ReviewState` wynika, które karty dziś trzeba pokazać. Pokazujemy je, użytkownik ocenia ("Again / Hard / Good / Easy" albo "1-5", w zależności od algorytmu), na podstawie oceny aktualizujemy stan i wyznaczamy kolejny termin powtórki.
 
@@ -45,7 +45,7 @@ Tu nie ma "zdroworozsądkowej" odpowiedzi. Jeśli oprzesz się o klasyczny algor
 
 Każda taka decyzja to kontrakt, który propaguje się dalej:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-2-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-2-10x.png)
 
 Innymi słowy: w `S-04` nie blokuje cię brak kodu do napisania. Blokuje cię **brak osadzenia kodu w konkretnych decyzjach domenowych**, bez których agent nie wie, w którą stronę pisać. Plan zbudowany przed tą decyzją będzie mocno ograniczony - agent wybierze coś sam, w połowie implementacji okaże się, że schemat nie pasuje do API biblioteki i wrócisz do tego samego miejsca, tylko ze śmietnikiem w repo.
 
@@ -159,7 +159,8 @@ Czas na ostatni element układanki - skill do analizy stanu projektu z uwzględn
 
 Od strony zawartości:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-3-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-3-10x.png)
+
 - **Grupa subagentów uruchamiana równolegle.** Skill korzysta z agenta `Explore` (szybki search po plikach i wzorcach) oraz `general-purpose` (głębsza wielo-plikowa analiza z reasoningiem). Główny agent dzieli pytanie na 2-4 obszary i odpala je w jednej wiadomości, a potem zbiera wyniki w jeden raport. Twoje główne okno kontekstowe nie wczytuje całego repo - robią to subagenty u siebie, a do rozmowy wraca już synteza z `file:line`.
 - **Scope check przed researchem.** Jeśli pytanie jest niejednoznaczne, skill zatrzymuje się i pyta przez `AskUserQuestion` o zakres, głębokość i obszar (np. "architecture & patterns" vs "integration points"). Krótki dialog wymusza decyzję, zanim agent zacznie palić tokeny.
 - **Output ląduje na dysku jako `context/changes/<change-id>/research.md`.** Strukturyzowany dokument z sekcjami _Summary_, _Detailed Findings_ (każde z referencją `file.ext:line`), _Code References_, _Architecture Insights_ i _Open Questions_.
@@ -191,7 +192,7 @@ W całym workflow `research.md` nie jest raportem do szuflady. Stałe miejsce na
 
 Łącząc wszystkie składowe w całość, mamy następujący schemat przygotowania kontekstu pod nowe zadanie:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-4-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-4-10x.png)
 
 Zobaczmy jak to działa w praktyce:
 
@@ -228,7 +229,7 @@ Zanim wjedziemy z kodem, opcjonalnie do zastosowania jeszcze jedna bramka, dla t
 
 Po takim review możemy odpalić implementację. Mechanikę `/10x-implement` poznałeś już wcześniej: agent bierze plan, wykonuje konkretną fazę, weryfikuje, zatrzymuje się na ręcznych metodach weryfikacji, commituje, aktualizuje `## Progress` i pozwala wrócić do realizacji zadania po czasie.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-5-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-5-10x.png)
 
 Osadzenie planu w starannie zebranych źródłach jeszcze bardziej podnosi skuteczność działania agenta. Trudne i nieoczywiste problemy rozbijamy na mniejsze, "do zjedzenia" podzadania.
 
@@ -277,7 +278,7 @@ To trzy różne objawy tego samego problemu. Nie brak przygotowania, ale **błę
 
 Błędny framing oznacza, że już sama nazwa problemu jest myląca i sklejona z proponowanym rozwiązaniem. Research produkuje wtedy coraz więcej szczegółowych odpowiedzi na pytanie, które od początku jest zadane źle.
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-6-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-6-10x.png)
 
 W naszym przypadku pytanie "jak wygląda docelowa sesja powtórek?" było jasne. Wykonaliśmy research, na tej podstawie powstał plan, z tego wyszła udana implementacja. Ale nie zawsze tak jest.
 
@@ -301,7 +302,7 @@ Co poszło nie tak? Brak doświadczenia i skupienie na niewłaściwym obszarze a
 
 Skąd ten rozjazd? Zlepiły się trzy różne rzeczy:
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-7-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m2-l4-lesson-draft-7-10x.png)
 
 `/10x-frame` to skill, który wymusza rozdzielenie tych trzech warstw, **zanim** w ogóle przejdziesz do planu. Prowadzi cię przez Frame Brief: rozpisz osobno obserwację, osobno zakładaną przyczynę, osobno proponowany fix.
 

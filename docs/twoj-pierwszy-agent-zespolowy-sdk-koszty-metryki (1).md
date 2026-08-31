@@ -1,10 +1,10 @@
 ---
-title: "Twój pierwszy Agent zespołowy: SDK, koszty, metryki"
-course: "10xdevs-3"
-language: "pl"
-source: "Przeprogramowani.pl"
-exported: "2026-08-31"
-format: "markdown"
+title: 'Twój pierwszy Agent zespołowy: SDK, koszty, metryki'
+course: '10xdevs-3'
+language: 'pl'
+source: 'Przeprogramowani.pl'
+exported: '2026-08-31'
+format: 'markdown'
 ---
 
 ![Obraz](https://images.przeprogramowani.pl/lessons/m5-l2/assets/cover.jpg)
@@ -37,7 +37,7 @@ Cena za wygodę: jesteś przywiązany do modeli, runtime'u i cennika danego prod
 
 **SDK do złożenia agenta** dają ci składowe agenta i punkty montażu: zawołaj model, uruchom narzędzie, dołącz wynik, powtórz, zatrzymaj. Harness, który po drugiej stronie dostajesz gotowy, tutaj _składasz sam_ — narzędzia dokładasz własne, a w zamian masz interfejs niezależny od modelu. Tak działają [OpenRouter Agent SDK](https://openrouter.ai/docs/agent-sdk/overview) i [Vercel AI SDK](https://ai-sdk.dev/docs/ai-sdk-core/overview).
 
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l2-lesson-draft-1-10x.png) 
+![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l2-lesson-draft-1-10x.png)
 
 Pytanie "które SDK jest najlepsze?" jest źle postawione. Dobre pytanie brzmi: "chcę gotowego agenta kodującego czy framework, z którego sam go złożę?". Prawie każda różnica między tymi narzędziami wynika z tego jednego podziału.
 
@@ -60,7 +60,7 @@ Zacznijmy od tego, co w obu wersjach jest **identyczne**: prompt systemowy, kali
 Schemat wyjścia piszemy w oparciu o bibliotekę `zod` — to nasze jedno źródło prawdy, z którego wyprowadzamy też typ `Review`. Na ten moment nie skupiamy się stricte na jakości prompta do review, a raczej chcemy wszystko złożyć w jedną całość i dalej nad tym iterować.
 
 ```typescript
-import { z } from "zod";
+import { z } from 'zod';
 
 const SYSTEM_PROMPT = `Jesteś precyzyjnym, konstruktywnym recenzentem kodu oceniającym pull request.
 Oceń podany diff w pięciu kryteriach w skali 1-10 (1 = poważne braki, 10 = wzorowo):
@@ -72,20 +72,27 @@ w Markdown, na podstawie którego autor PR-a będzie mógł działać.`;
 // minimum/maximum na typie integer, więc zakres 1-10 wymuszamy opisem pola i promptem,
 // a nie samym schematem.
 const REVIEW_SCHEMA = z.object({
-  implementationCorrectness: z.number().describe("Poprawność implementacji: czy kod robi to, co deklaruje (skala 1-10)"),
-  idiomaticity: z.number().describe("Idiomatyczność: zgodność z konwencjami języka i projektu (skala 1-10)"),
-  complexity: z.number().describe("Złożoność: prostota rozwiązania względem problemu (skala 1-10)"),
-  testRiskCoverage: z.number().describe("Pokrycie testami proporcjonalne do ryzyka zmienianych ścieżek (skala 1-10)"),
-  securitySafety: z.number().describe("Bezpieczeństwo: brak podatności i wycieków sekretów (skala 1-10)"),
-  verdict: z.enum(["pass", "fail"]).describe("Wiążący werdykt dla całej zmiany"),
-  summary: z.string().describe("Podsumowanie w Markdown, gotowe jako komentarz do PR-a"),
+	implementationCorrectness: z
+		.number()
+		.describe('Poprawność implementacji: czy kod robi to, co deklaruje (skala 1-10)'),
+	idiomaticity: z
+		.number()
+		.describe('Idiomatyczność: zgodność z konwencjami języka i projektu (skala 1-10)'),
+	complexity: z.number().describe('Złożoność: prostota rozwiązania względem problemu (skala 1-10)'),
+	testRiskCoverage: z
+		.number()
+		.describe('Pokrycie testami proporcjonalne do ryzyka zmienianych ścieżek (skala 1-10)'),
+	securitySafety: z
+		.number()
+		.describe('Bezpieczeństwo: brak podatności i wycieków sekretów (skala 1-10)'),
+	verdict: z.enum(['pass', 'fail']).describe('Wiążący werdykt dla całej zmiany'),
+	summary: z.string().describe('Podsumowanie w Markdown, gotowe jako komentarz do PR-a')
 });
 
 // Konfiguracja pola target zapewnia zgodność między zodem a Claude Agent SDK
-const REVIEW_JSON_SCHEMA = z.toJSONSchema(REVIEW_SCHEMA, { target: "draft-07" });
+const REVIEW_JSON_SCHEMA = z.toJSONSchema(REVIEW_SCHEMA, { target: 'draft-07' });
 
 type Review = z.infer<typeof REVIEW_SCHEMA>;
-
 ```
 
 AI SDK weźmie definicję wyjścia prosto od obiektów zoda, a Claude Agent SDK dostanie JSON Schema wyprowadzony z tego samego obiektu przez `z.toJSONSchema()`.
@@ -96,14 +103,15 @@ Tę dźwignię można dociskać dalej. Zamiast jednozdaniowego opisu możesz wst
 
 ```typescript
 const REVIEW_SCHEMA = z.object({
-  implementationCorrectness: z.number().describe(
-    "Poprawność implementacji: czy kod robi to, co deklaruje (skala 1-10). " +
-    "1: logika jest błędna lub po cichu psuje istniejące zachowania. " +
-    "10: poprawny na ścieżce głównej, w przypadkach brzegowych i w obsłudze błędów."
-  ),
-  // ...
+	implementationCorrectness: z
+		.number()
+		.describe(
+			'Poprawność implementacji: czy kod robi to, co deklaruje (skala 1-10). ' +
+				'1: logika jest błędna lub po cichu psuje istniejące zachowania. ' +
+				'10: poprawny na ścieżce głównej, w przypadkach brzegowych i w obsłudze błędów.'
+		)
+	// ...
 });
-
 ```
 
 Wpływ tego pola na działanie agenta można testować iteracyjnie, na podstawie instrukcji z kolejnej lekcji.
@@ -131,48 +139,47 @@ git diff | npx tsx review.ts
 Alternatywnie, diff możesz też wczytywać z pliku lub z dowolnego innego źródła. Dalsza część to wykorzystanie dostępnych funkcji z pobranego SDK:
 
 ```typescript
-import { query } from "@anthropic-ai/claude-agent-sdk";
-import { z } from "zod"; // tylko po to, by skonwertować wspólny schemat
+import { query } from '@anthropic-ai/claude-agent-sdk';
+import { z } from 'zod'; // tylko po to, by skonwertować wspólny schemat
 
 // Czytanie argumentów z stdin
 async function readDiff(): Promise<string> {
-  const chunks: Buffer[] = [];
-  for await (const chunk of process.stdin) chunks.push(chunk as Buffer);
-  return Buffer.concat(chunks).toString("utf8");
+	const chunks: Buffer[] = [];
+	for await (const chunk of process.stdin) chunks.push(chunk as Buffer);
+	return Buffer.concat(chunks).toString('utf8');
 }
 
 // Proces review na podstawie git diffa
 async function review(diff: string): Promise<Review> {
+	// Konfiguracja agenta
+	const result = query({
+		prompt: `Zrecenzuj ten diff:\n\n${diff}`,
+		options: {
+			systemPrompt: SYSTEM_PROMPT,
+			model: 'claude-sonnet-4-6',
+			tools: [],
+			maxTurns: 2,
+			outputFormat: { type: 'json_schema', schema: REVIEW_JSON_SCHEMA }
+		}
+	});
 
-  // Konfiguracja agenta
-  const result = query({
-    prompt: `Zrecenzuj ten diff:\n\n${diff}`,
-    options: {
-      systemPrompt: SYSTEM_PROMPT,
-      model: "claude-sonnet-4-6",
-      tools: [],
-      maxTurns: 2,
-      outputFormat: { type: "json_schema", schema: REVIEW_JSON_SCHEMA },
-    },
-  });
-
-  // Procesowanie odpowiedzi i ew. obsługa błędów
-  for await (const message of result) {
-    if (message.type !== "result") continue;
-    if (message.subtype === "success") {
-      const parsed = REVIEW_SCHEMA.safeParse(message.structured_output);
-      if (!parsed.success) throw new Error(`Niepoprawny structured output: ${parsed.error.message}`);
-      return parsed.data;
-    }
-    throw new Error(`Review nie powiodło się (${message.subtype}): ${message.errors.join("; ")}`);
-  }
-  throw new Error("Agent nie zwrócił wyniku");
+	// Procesowanie odpowiedzi i ew. obsługa błędów
+	for await (const message of result) {
+		if (message.type !== 'result') continue;
+		if (message.subtype === 'success') {
+			const parsed = REVIEW_SCHEMA.safeParse(message.structured_output);
+			if (!parsed.success)
+				throw new Error(`Niepoprawny structured output: ${parsed.error.message}`);
+			return parsed.data;
+		}
+		throw new Error(`Review nie powiodło się (${message.subtype}): ${message.errors.join('; ')}`);
+	}
+	throw new Error('Agent nie zwrócił wyniku');
 }
 
 // Entry point całego procesu
 const diff = await readDiff();
 console.log(JSON.stringify(await review(diff), null, 2));
-
 ```
 
 Zwróć uwagę, co dostałeś za darmo, a o czym musisz pamiętać:
@@ -199,37 +206,35 @@ npm install -D tsx @types/node
 I od razu z tej elastyczności korzystamy: zamiast LLMa od Anthropica wskazujemy model spoza tego ekosystemu (GLM przez OpenRouter).
 
 ```typescript
-import { ToolLoopAgent, Output, stepCountIs } from "ai";
-import { openrouter } from "@openrouter/ai-sdk-provider";
+import { ToolLoopAgent, Output, stepCountIs } from 'ai';
+import { openrouter } from '@openrouter/ai-sdk-provider';
 
 // Czytanie argumentów z stdin
 async function readDiff(): Promise<string> {
-  const chunks: Buffer[] = [];
-  for await (const chunk of process.stdin) chunks.push(chunk as Buffer);
-  return Buffer.concat(chunks).toString("utf8");
+	const chunks: Buffer[] = [];
+	for await (const chunk of process.stdin) chunks.push(chunk as Buffer);
+	return Buffer.concat(chunks).toString('utf8');
 }
 
 // Proces review na podstawie git diffa
 async function review(diff: string): Promise<Review> {
+	// Wykorzystanie tzw. pętli agentowej z AI SDK
+	const reviewer = new ToolLoopAgent({
+		model: openrouter('z-ai/glm-5.1'),
+		instructions: SYSTEM_PROMPT,
+		tools: {},
+		output: Output.object({ schema: REVIEW_SCHEMA }),
+		stopWhen: stepCountIs(2)
+	});
 
-  // Wykorzystanie tzw. pętli agentowej z AI SDK
-  const reviewer = new ToolLoopAgent({
-    model: openrouter("z-ai/glm-5.1"),
-    instructions: SYSTEM_PROMPT,
-    tools: {},
-    output: Output.object({ schema: REVIEW_SCHEMA }),
-    stopWhen: stepCountIs(2),
-  });
-
-  const { output } = await reviewer.generate({
-    prompt: `Zrecenzuj ten diff:\n\n${diff}`,
-  });
-  return output;
+	const { output } = await reviewer.generate({
+		prompt: `Zrecenzuj ten diff:\n\n${diff}`
+	});
+	return output;
 }
 
 const diff = await readDiff();
 console.log(JSON.stringify(await review(diff), null, 2));
-
 ```
 
 Koncepcyjnie, praca z `ai-sdk` w wersji 6 przypomina deklaratywne rozwiązania w stylu Claude Agent SDK. Wszystko dzięki nowości w postaci `ToolLoopAgent`. To API trafiło do biblioteki dopiero w AI SDK 6 (stabilnym od grudnia 2025) — w AI SDK 5 ta sama klasa była eksperymentalna i nazywała się `Experimental_Agent` (z polem `system` zamiast `instructions`). O konsekwencjach tej zmiany w dalszej części lekcji.
@@ -275,7 +280,7 @@ Anthropic opisuje to na pięciu krokach:
 3. **Wykonanie narzędzi.** Uruchamiane zostają żądane narzędzia i zbierane są ich wyniki.
 4. **Powrót.** Wyniki wracają do modelu jako wejście do kolejnej rundy. Kroki 2-3 powtarzają się w kółko.
 5. **Wynik.** Gdy model odpowie samym tekstem, bez żądania narzędzi, pętla się kończy i oddaje wynik — razem z kosztem i zużyciem tokenów.
-![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l2-lesson-draft-2-10x.png) 
+   ![Diagram](https://images.przeprogramowani.pl/diagrams/lessons-m5-l2-lesson-draft-2-10x.png)
 
 Jedno pełne okrążenie (decyzja modelu, wykonanie narzędzi, powrót wyniku) to jedna **tura** (stąd ustawienia typu `maxTurns`). Proste pytanie zamyka się w jednej czy dwóch turach; złożone zadanie potrafi nawiązać kilkanaście tur (czyta pliki, edytuje kod, odpala testy), aż model uzna, że skończył. W naszym review świadomie ścinamy to do 2-3 kroków, bo recenzja diffa nie potrzebuje więcej.
 
@@ -288,22 +293,24 @@ Cała różnica między gotowym agentem a wersją do złożenia sprowadza się d
 W uproszczeniu wyglądało to tak:
 
 ```typescript
-const messages: ModelMessage[] = [{ role: "user", content: prompt }];
+const messages: ModelMessage[] = [{ role: 'user', content: prompt }];
 let step = 0;
 while (true) {
-  const result = await generateText({ model, messages, tools }); // Generuj odpowiedź modelu
-  messages.push(...result.response.messages);  // Dopisz wiadomość do historii
-  if (result.finishReason !== "tool-calls") break; // Brak potrzeb korzystania z narzędzi
-  for (const call of result.toolCalls) {
-    const output = await runTool(call); // Wyszukaj i wywołaj narzędzie
-    messages.push({ // Procesuj wynik kolejnego narzędzia
-      role: "tool",
-      content: [{ type: "tool-result", toolCallId: call.toolCallId, toolName: call.toolName, output }],
-    });
-  }
-  if (++step >= MAX_STEPS) break;                         // sam pilnujesz warunku stopu
+	const result = await generateText({ model, messages, tools }); // Generuj odpowiedź modelu
+	messages.push(...result.response.messages); // Dopisz wiadomość do historii
+	if (result.finishReason !== 'tool-calls') break; // Brak potrzeb korzystania z narzędzi
+	for (const call of result.toolCalls) {
+		const output = await runTool(call); // Wyszukaj i wywołaj narzędzie
+		messages.push({
+			// Procesuj wynik kolejnego narzędzia
+			role: 'tool',
+			content: [
+				{ type: 'tool-result', toolCallId: call.toolCallId, toolName: call.toolName, output }
+			]
+		});
+	}
+	if (++step >= MAX_STEPS) break; // sam pilnujesz warunku stopu
 }
-
 ```
 
 Policz, ile rzeczy musisz kontrolować tu samemu: tablicę `messages` i jej dopisywanie po każdej turze, samą pętlę `while`, odczyt `finishReason`, ręczne wywołanie każdego narzędzia, sformatowanie wyniku jako wiadomości `tool` i odesłanie go z powrotem do modelu, wreszcie własny licznik kroków jako warunek stopu. Pomyłka w którymkolwiek z tych miejsc daje albo agenta, który nie reaguje na wynik narzędzia, albo pętlę, która nie chce się zatrzymać.
@@ -324,16 +331,15 @@ To jedna z najgrubszych różnic między obiema kategoriami i biegnie dokładnie
 // pierwszy przebieg: zapamiętaj id sesji
 let sessionId: string | undefined;
 for await (const message of query({ prompt: `Zrecenzuj ten diff:\n\n${diff}`, options })) {
-  if (message.type === "system" && message.subtype === "init") sessionId = message.session_id;
-  // ...odbiór wyniku jak wcześniej
+	if (message.type === 'system' && message.subtype === 'init') sessionId = message.session_id;
+	// ...odbiór wyniku jak wcześniej
 }
 
 // kolejny przebieg (np. po poprawkach): wznów ten sam kontekst
 query({
-  prompt: "Autor naniósł poprawki. Sprawdź, czy adresują twoje wcześniejsze uwagi.",
-  options: { ...options, resume: sessionId },   // agent pamięta, co już widział
+	prompt: 'Autor naniósł poprawki. Sprawdź, czy adresują twoje wcześniejsze uwagi.',
+	options: { ...options, resume: sessionId } // agent pamięta, co już widział
 });
-
 ```
 
 Możesz nawet sesję _rozszczepić_ (`fork`), żeby sprawdzić alternatywną ścieżkę, nie psując oryginału. Stan żyje w harnessie — ty operujesz tylko jego identyfikatorem. Tak samo działają pozostałe gotowe agenty: Codex trzyma wątki w `~/.codex/sessions` i wznawiasz je po id (`resumeThread`).
@@ -342,13 +348,12 @@ Możesz nawet sesję _rozszczepić_ (`fork`), żeby sprawdzić alternatywną śc
 
 ```typescript
 // brak sesji: historię prowadzisz sam i podajesz przy każdym wywołaniu
-const messages: ModelMessage[] = [{ role: "user", content: `Zrecenzuj ten diff:\n\n${diff}` }];
+const messages: ModelMessage[] = [{ role: 'user', content: `Zrecenzuj ten diff:\n\n${diff}` }];
 const first = await reviewer.generate({ messages });
-messages.push(...first.response.messages);                    // dopisz, co odpowiedział model
+messages.push(...first.response.messages); // dopisz, co odpowiedział model
 
-messages.push({ role: "user", content: "Sprawdź, czy poprawki adresują twoje uwagi." });
-const second = await reviewer.generate({ messages });         // kontynuacja = ty doniosłeś kontekst
-
+messages.push({ role: 'user', content: 'Sprawdź, czy poprawki adresują twoje uwagi.' });
+const second = await reviewer.generate({ messages }); // kontynuacja = ty doniosłeś kontekst
 ```
 
 > **Uwaga:** `output` ustawiasz na agencie (w konstruktorze `ToolLoopAgent`), nie na pojedynczym `generate()`. Dlatego ten sam `reviewer` ze structured output wymusiłby schemat również na pytaniu uzupełniającym — jeśli druga tura ma wrócić zwykłym tekstem, użyj do niej osobnego agenta bez `output`, podając mu tę samą tablicę `messages`.
@@ -377,15 +382,14 @@ Domyślnie SDK ładuje ustawienia z `.claude/` w katalogu roboczym i z `~/.claud
 ```typescript
 // Gotowy agent dziedziczy reguły, skille i pamięć repo
 const result = query({
-  prompt: `Zrecenzuj ten diff:\n\n${diff}`,
-  options: {
-    systemPrompt: { type: "preset", preset: "claude_code" }, // wciąga CLAUDE.md + konwencje
-    settingSources: ["project"],                              // .claude/ z repo: skille, ustawienia
-    skills: "all",                                            // udostępnij modelowi odkryte skille
-    allowedTools: ["Read", "Glob", "Grep"],                   // niech zajrzy do sąsiednich plików
-  },
+	prompt: `Zrecenzuj ten diff:\n\n${diff}`,
+	options: {
+		systemPrompt: { type: 'preset', preset: 'claude_code' }, // wciąga CLAUDE.md + konwencje
+		settingSources: ['project'], // .claude/ z repo: skille, ustawienia
+		skills: 'all', // udostępnij modelowi odkryte skille
+		allowedTools: ['Read', 'Glob', 'Grep'] // niech zajrzy do sąsiednich plików
+	}
 });
-
 ```
 
 Dwie rzeczy decydują tu o tym, czy skill faktycznie zadziała. `skills: "all"` to w SDK jedyne miejsce, w którym udostępniasz modelowi odkryte skille (możesz też podać listę nazw, np. `["greeting"]`) — sam preset i `settingSources` udostępniają pliki, ale to ta opcja wpuszcza je do listy widzianej przez model. A `settingSources: ["project"]` ładuje `.claude/` z _katalogu roboczego_ — jeśli twój `.claude/skills` leży gdzie indziej niż miejsce, z którego odpalasz skrypt, wskaż ten katalog jawnie opcją `cwd`.
@@ -396,15 +400,14 @@ Pozostałe gotowe agenty działają tak samo, każdy w swoim ekosystemie. **Code
 
 ```typescript
 // Wersja do złożenia: reguły nie wczytają się same — sam je czytasz i wstrzykujesz
-import { readFileSync } from "node:fs";
+import { readFileSync } from 'node:fs';
 
-const projectRules = readFileSync("CLAUDE.md", "utf8"); // konwencje repo, wczytane ręcznie
+const projectRules = readFileSync('CLAUDE.md', 'utf8'); // konwencje repo, wczytane ręcznie
 const reviewer = new ToolLoopAgent({
-  model: openrouter("z-ai/glm-5.1"),
-  instructions: `${SYSTEM_PROMPT}\n\nKonwencje projektu:\n${projectRules}`,
-  // ...
+	model: openrouter('z-ai/glm-5.1'),
+	instructions: `${SYSTEM_PROMPT}\n\nKonwencje projektu:\n${projectRules}`
+	// ...
 });
-
 ```
 
 Wersja do złożenia oddaje ci pełną kontrolę nad tym, _co_ trafia do promptu, w zamian za to, że nic nie dzieje się samo. Skille jako auto-ładowane zdolności, hooki cyklu życia, pamięć projektu — w tym świecie to wzorce, które implementujesz sam (regułę dokleisz do `instructions`, „hook" zrobisz własnym `StopCondition` albo logiką wokół pętli), a nie pliki, które framework znajdzie za ciebie.
@@ -435,12 +438,11 @@ Skoro agent ma chodzić często, dochodzą dwa pytania operacyjne: ile to kosztu
 **Tokeny pobierasz wprost z obiektu odpowiedzi.** W Claude Agent SDK, ta sama wiadomość `result`, z której wyjmujesz `structured_output`, niesie też pole `usage` (tokeny wejścia i wyjścia, z rozbiciem na cache):
 
 ```typescript
-if (message.subtype === "success") {
-  message.usage.input_tokens; // tokeny (snake_case, z rozbiciem na cache)
-  message.total_cost_usd;     // gotowy koszt w USD — bez tabeli stawek
-  message.modelUsage;         // rozbicie per model (camelCase: inputTokens, costUSD…)
+if (message.subtype === 'success') {
+	message.usage.input_tokens; // tokeny (snake_case, z rozbiciem na cache)
+	message.total_cost_usd; // gotowy koszt w USD — bez tabeli stawek
+	message.modelUsage; // rozbicie per model (camelCase: inputTokens, costUSD…)
 }
-
 ```
 
 W wersji do złożenia (AI SDK) funkcja `generate()` zwraca obok wyniku `totalUsage` — w naszym kodzie destrukturyzujemy tylko `{ output }`, ale tokeny czekają tuż obok:
@@ -448,19 +450,19 @@ W wersji do złożenia (AI SDK) funkcja `generate()` zwraca obok wyniku `totalUs
 ```typescript
 const { output, totalUsage } = await reviewer.generate({ prompt });
 // totalUsage.inputTokens, totalUsage.outputTokens, totalUsage.totalTokens
-
 ```
 
 **Zużycie na bieżąco.** Przy dłuższej pętli czasem chcesz widzieć zużycie narastająco — choćby po to, żeby wyłapać przebieg, który zaczął się zapętlać, zanim algorytm dobije do `stepCountIs`. Wersja do złożenia daje ci na to hook: `onStepFinish` odpala się po każdej turze i wręcza numer kroku, zużycie tokenów i powód zakończenia, więc telemetrię per krok składasz sam:
 
 ```typescript
 await reviewer.generate({
-  prompt,
-  onStepFinish: ({ stepNumber, usage, finishReason }) => {
-    console.log(`krok ${stepNumber}: ${usage.inputTokens} in / ${usage.outputTokens} out (${finishReason})`);
-  },
+	prompt,
+	onStepFinish: ({ stepNumber, usage, finishReason }) => {
+		console.log(
+			`krok ${stepNumber}: ${usage.inputTokens} in / ${usage.outputTokens} out (${finishReason})`
+		);
+	}
 });
-
 ```
 
 **Koszt w dolarach to już inna historia.** Claude Agent SDK liczy go za ciebie — `result` ma gotowe pole `total_cost_usd`, a do tego `modelUsage` (rozbicie per model), `num_turns` i `duration_ms`. Komplet metryk operacyjnych dostajesz bez żadnej tabeli stawek.
@@ -473,8 +475,7 @@ Po stronie do złożenia gotowy prymityw `maxCost` ma **OpenRouter Agent SDK**. 
 
 ```typescript
 // gotowy agent (Claude Agent SDK):  options: { maxBudgetUsd: 0.5, ... }
-stopWhen: maxCost(0.5) // OpenRouter Agent SDK: twardy sufit 50 centow na przebieg
-
+stopWhen: maxCost(0.5); // OpenRouter Agent SDK: twardy sufit 50 centow na przebieg
 ```
 
 Wyjątkiem jest Vercel AI SDK 6: nazwanego `maxCost` tu nie ma, a samo podłączenie OpenRoutera jako providera tego nie zmienia. Ten sam efekt nadal osiągniesz, ale musisz dopisać własny `StopCondition`, który zlicza koszt po krokach.
@@ -492,15 +493,20 @@ Zanim wejdziesz w zadania, jedna uwaga organizacyjna o odznace **10xChampion**: 
 Budujemy pierwszą wersję prostego, oskryptowanego agenta do code review, którego w kolejnej lekcji wdrożymy i rozbudujemy na CI/CD.
 
 1. **Wybierz jedną z prezentowanych w tej lekcji opcji**
+
 - Claude Agent SDK
 - Codex SDK
 - Cursor SDK
 - Vercel AI SDK
 - OpenRouter Agent SDK
+
 1. **Zintegruj ją z twoim projektem jako niezależna paczka**
+
 - W przypadku Vercel AI SDK wykorzystaj gotowy skill `npx skills add vercel/ai`
 - W przypadku innych dostawców, pobierz dokumentację jako kontekst i poproś agenta o konfigurację
+
 1. **Potwierdź udaną komunikację z wybranym modelem**
+
 - Wykorzystaj podstawowy prompt do code review oraz symulowany diff (wygeneruj przez agenta)
 - Sprawdź, czy model odpowiada poprawnie (jeśli nie, przeanalizuj z agentem logi i upewnij się, że ustawiłeś klucz do API)
 
@@ -626,25 +632,24 @@ Cloudflare Agents SDK buduje na tym fundamencie klasę `Agent<Env, State>`. Każ
 #### Klasa `Agent` — co dostajesz w pakiecie
 
 ```typescript
-import { Agent, routeAgentRequest } from "agents";
+import { Agent, routeAgentRequest } from 'agents';
 
 export class ReviewAgent extends Agent<Env, { reviewCount: number }> {
-  initialState = { reviewCount: 0 };
+	initialState = { reviewCount: 0 };
 
-  async onRequest(request: Request) {
-    const diff = await request.text();
-    const result = await runReview(diff, this.env.AI);
-    this.setState({ reviewCount: this.state.reviewCount + 1 });
-    return Response.json(result);
-  }
+	async onRequest(request: Request) {
+		const diff = await request.text();
+		const result = await runReview(diff, this.env.AI);
+		this.setState({ reviewCount: this.state.reviewCount + 1 });
+		return Response.json(result);
+	}
 }
 
 export default {
-  fetch(request: Request, env: Env) {
-    return routeAgentRequest(request, env) ?? new Response("Not found", { status: 404 });
-  },
+	fetch(request: Request, env: Env) {
+		return routeAgentRequest(request, env) ?? new Response('Not found', { status: 404 });
+	}
 };
-
 ```
 
 Trzy rzeczy zmieniają się w stosunku do lokalnego skryptu:
@@ -691,14 +696,13 @@ Zamiast globalnych triggerów na poziomie Workera, każda instancja agenta ma w�
 
 ```typescript
 // uruchom za 10 minut
-this.schedule(600, "runReview", { prId: "123" });
+this.schedule(600, 'runReview', { prId: '123' });
 
 // co godzinę, wyrażenie cron
-this.schedule("0 * * * *", "syncStats", {});
+this.schedule('0 * * * *', 'syncStats', {});
 
 // co 30 sekund
-this.scheduleEvery(30, "heartbeat", {});
-
+this.scheduleEvery(30, 'heartbeat', {});
 ```
 
 Zaplanowane zadania przeżywają restarty — są zapisywane w SQLite. Identyczne wywołania (`callback + wyrażenie + payload`) są idempotentne domyślnie, więc przy każdym ponownym podłączeniu nie tworzysz duplikatów.
